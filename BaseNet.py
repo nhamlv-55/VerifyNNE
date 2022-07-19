@@ -4,13 +4,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
-from torch.optim.lr_scheduler import StepLR
 import numpy as np
 import logging
 from datetime import datetime
 import copy
 from utils import CommaString
-from typing import List
+from typing import List, Sequence
 
 class BaseNet(nn.Module):
     def __init__(self):
@@ -53,6 +52,12 @@ class AcasXu(BaseNet):
     def __init__(self, AcasPath: str):
         super().__init__()
         self.modelpath = AcasPath
+        self.input_size: int = 0
+        self.output_size: int = 0
+        self.means: List[float] = []
+        self.ranges: List[float] = []
+        self.mins: List[float] = []
+        self.maxs: List[float] = []
         self.layers = nn.ModuleList()
         self.read_acas(AcasPath)
 
@@ -167,17 +172,46 @@ class AcasXu(BaseNet):
             data = CommaString(f.read())
             assert not data.has_next_comma()  # should have no more data
 
-        for idx in range(len(_layer_sizes)-1):
-            layer = nn.Linear(_layer_sizes[idx], _layer_sizes[idx+1])
-            layer.weight.data = _layer_weights[idx]
-            layer.bias.data = _layer_biases[idx]
-            self.layers.append(layer)
+        ##Reading is done. Setup the network
+        try:
+            self.input_size = _input_size
+            self.output_size = _output_size
+            self.means = _means
+            self.ranges = _ranges
+            self.mins = _mins
+            self.maxs = _maxs
+            for idx in range(len(_layer_sizes)-1):
+                layer = nn.Linear(_layer_sizes[idx], _layer_sizes[idx+1])
+                layer.weight.data = _layer_weights[idx]
+                layer.bias.data = _layer_biases[idx]
+                self.layers.append(layer)
+        except Exception as e:
+            print(e)
 
+    def normalize_inputs(self, t: Tensor, mins: Sequence[float], maxs: Sequence[float]) -> Tensor:
+        """ Normalize: ([min, max] - mean) / range """
+        print(t.shape)
+        slices: List[Tensor] = []
+        for i in range(self.input_size):
+            slice = t[:, i:i+1]
+            slice = slice.clamp(mins[i], maxs[i])
+            slice -= self.means[i]
+            slice /= self.ranges[i]
+            slices.append(slice)
+        return torch.cat(slices, dim=-1)
 
+    def denormalize_outputs(self, t: Tensor) -> Tensor:
+        """ Denormalize: v * range + mean """
+        # In NNET files, the mean/range of output is stored in [-1] of array.
+        # All are with the same mean/range, so I don't need to slice.
+        t *= self.ranges[-1]
+        t += self.means[-1]
+        return t
     def forward(self, x: Tensor)->Tensor:
         """ Normalization and Denomalization are called outside this method. """
-        for lin in self.layers[:-1]:
+        for lid, lin in enumerate(self.layers[:-1]):
             x = lin(x)
+            if(x.shape[0]==1): print(lid, x)
             x = F.relu(x)
 
         x = self.layers[-1](x)
