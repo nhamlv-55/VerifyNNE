@@ -50,7 +50,7 @@ def get_activation(name: str, tensor_logger: Dict[str, Any],
 class BaseNet(nn.Module):
     def __init__(self):
         super(BaseNet, self).__init__()
-        self.tensor_log = {}
+        self.tensor_log: Dict[str, Any] = {}
         self.gradient_log = {}
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
@@ -75,11 +75,15 @@ class BaseNet(nn.Module):
     def model_savename(self)->str:
         raise NotImplementedError
         
-    def get_pattern(self, input, layers, device, flatten = True):
+    def get_pattern(self, input: Tensor, 
+                        layers: List[str], 
+                        device: torch.device, 
+                        detach: bool = True,
+                        flatten:bool = True)->Dict[str, np.ndarray]:
         self.eval()
-        self.register_log()
+        self.register_log(detach)
         self.forward(input.to(device))
         tensor_log = copy.deepcopy(self.tensor_log)
         if flatten:
-            return np.concatenate([tensor_log[l] for l in layers], axis=1)
+            return {'all': np.concatenate([tensor_log[l] for l in layers], axis=1)}
         return tensor_log
