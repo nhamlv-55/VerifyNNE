@@ -1,5 +1,5 @@
 from typing import Tuple, List
-from BaseNet import AcasXu
+from AcasXuNet import AcasXu
 import torch
 from torch import Tensor
 from torch.utils.data import TensorDataset, DataLoader
