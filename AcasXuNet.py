@@ -9,6 +9,14 @@ from datetime import datetime
 import copy
 from utils import CommaString
 from typing import Callable, List, Sequence, Dict
+import enum
+
+class AcasOut(enum.IntEnum):
+    CLEAR_OF_CONFLICT = 0
+    WEAK_LEFT = 1
+    WEAK_RIGHT = 2
+    STRONG_LEFT = 3
+    STRONG_RIGHT = 4
 
 class AcasXu(BaseNet):
     def __init__(self, AcasPath: str):
