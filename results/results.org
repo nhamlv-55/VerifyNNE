@@ -1,0 +1,10 @@
+Using Marabou to check ACAS
+spec_margin = -0.0001
+rulu_margin = 0.001
+TIMEOUT = 200
+              0             1             2             3             4
+0            -1   SAT:0.63837  SAT:0.389131       TIMEOUT       TIMEOUT
+1       TIMEOUT            -1       TIMEOUT  SAT:0.753156       TIMEOUT
+2       TIMEOUT       TIMEOUT            -1       TIMEOUT       TIMEOUT
+3  SAT:0.429374   SAT:0.42404   SAT:0.42919            -1  SAT:0.429375
+4       TIMEOUT  SAT:1.287883       TIMEOUT  SAT:0.704313            -1
