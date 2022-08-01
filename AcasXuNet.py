@@ -17,7 +17,12 @@ class AcasOut(enum.IntEnum):
     WEAK_RIGHT = 2
     STRONG_LEFT = 3
     STRONG_RIGHT = 4
-
+class AcasIn(enum.IntEnum):
+    RHO = 0 #distance between ownship and intruder
+    THETA = 1 #angle to intruder w.r.t ownship heading
+    PSI = 2 #heading of intruder w.r.t ownship
+    V_OWN = 3 #velocity of ownship
+    V_INT = 4 #velocity of intruder
 class AcasXu(BaseNet):
     def __init__(self, AcasPath: str):
         super().__init__()
