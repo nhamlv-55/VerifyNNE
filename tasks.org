@@ -1,3 +1,5 @@
 * DONE Read NNet
 * DONE Run ACAS to get Relu pattern
 * TODO Get ACAS saliency map
+* DONE Run all ACAS pattern
+* TODO Run ACAS pattern with smaller input range to observe some UNSAFE and scale from there
