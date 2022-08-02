@@ -210,11 +210,16 @@ class AcasXu(BaseNet):
 
 
     def compute_saliency_map(self, x: Tensor, label: int)->Tensor:
-        self.dump_grad()
-        logits = self.forward(x)
-        loss = logits[label]
-        loss.backward()
-        print("after")
-        self.dump_grad()
-
-        return torch.Tensor([])
+        """
+            Given an input tensor of shape (n_inputs, ...), returns
+            a saliency map tensor of the same size. 
+        """
+        n_inputs:int = x.shape[0]
+        x = torch.autograd.Variable(x, requires_grad=True)
+        saliency_map:List[Tensor] = []
+        print(n_inputs)
+        for idx in range(n_inputs):
+            logits = self.forward(x)
+            logits[idx][label].backward()
+            saliency_map.append(x.grad[idx])
+        return torch.stack(saliency_map)
