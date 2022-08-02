@@ -32,3 +32,8 @@ conda develop ../
 ```
 python marabou_acas.py
 ```
+To kill it, in a different terminal, run
+```
+pkill -f marabou_acas.py
+```
+You may need to run the `pkill` command multiple times.
