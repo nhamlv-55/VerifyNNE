@@ -179,6 +179,7 @@ class AcasXu(BaseNet):
         return t
     def forward(self, x: Tensor)->Tensor:
         """ Normalization and Denomalization are called outside this method. """
+        lin: torch.nn.Module
         for lid, lin in enumerate(self.layers[:-1]):
             x = lin(x)
             if(x.shape[0]==1): print(lid, x)
@@ -194,3 +195,21 @@ class AcasXu(BaseNet):
         for lidx, layer in enumerate(self.layers[:-1]):
             self.hooks.append(layer.register_forward_hook(get_activation('layer{}'.format(lidx),
                                 self.tensor_log, detach=detach)))
+
+    def dump_grad(self)->None:
+        layer: torch.nn.Module
+        for lidx, layer in enumerate(self.layers):
+            print("----layer {}----".format(lidx))
+            print(layer.weight.grad)
+            print(layer.bias.grad)
+
+
+    def compute_saliency_map(self, x: Tensor, label: int)->Tensor:
+        self.dump_grad()
+        logits = self.forward(x)
+        loss = logits[label]
+        loss.backward()
+        print("after")
+        self.dump_grad()
+
+        return torch.Tensor([])
