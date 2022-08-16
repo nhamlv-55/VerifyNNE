@@ -2,14 +2,14 @@ from torch import Tensor
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
-import numpy as np
 import logging
-from datetime import datetime
 import copy
-from utils import CommaString
-from typing import Any, Callable, List, Sequence, Dict
+import numpy as np
+from typing import Any, Callable, List, Dict
+from maraboupy import Marabou
+from maraboupy.MarabouNetwork import MarabouNetwork
+
+import tempfile
 
 def get_activation(name: str, tensor_logger: Dict[str, Any], 
                     detach: bool = True, is_lastlayer:bool = False)->Callable[..., None]:
@@ -47,6 +47,7 @@ def get_activation(name: str, tensor_logger: Dict[str, Any],
                                                 dim = 0) if name in tensor_logger else raw
             logging.debug(tensor_logger[name].shape)
         return hook
+
 class BaseNet(nn.Module):
     def __init__(self):
         super(BaseNet, self).__init__()
@@ -54,6 +55,22 @@ class BaseNet(nn.Module):
         self.gradient_log = {}
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
+        self.marabou_net: MarabouNetwork
+
+    def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
+        """
+            convert the network to MarabouNetwork
+        """
+        tempf = tempfile.NamedTemporaryFile()
+        torch.onnx.export(self, dummy_input, tempf.name, verbose=True)
+        self.marabou_net = Marabou.read_onnx(tempf.name)
+        return self.marabou_net
+
+    def check_network_consistancy(self)->bool:
+        """
+            check if the built marabou_net is actually equivalent to the original net
+        """
+        raise NotImplementedError
 
     def reset_hooks(self):
         self.tensor_log = {}
