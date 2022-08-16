@@ -5,11 +5,13 @@ import torch.nn.functional as F
 import logging
 import copy
 import numpy as np
-from typing import Any, Callable, List, Dict
+from typing import Any, Callable, List, Dict, Tuple
 from maraboupy import Marabou
 from maraboupy.MarabouNetwork import MarabouNetwork
 
 import tempfile
+
+THRESHOLD = 10**-10
 
 def get_activation(name: str, tensor_logger: Dict[str, Any], 
                     detach: bool = True, is_lastlayer:bool = False)->Callable[..., None]:
@@ -62,15 +64,34 @@ class BaseNet(nn.Module):
             convert the network to MarabouNetwork
         """
         tempf = tempfile.NamedTemporaryFile()
-        torch.onnx.export(self, dummy_input, tempf.name, verbose=True)
+        torch.onnx.export(self, dummy_input, tempf.name, verbose=False)
         self.marabou_net = Marabou.read_onnx(tempf.name)
+        assert self.check_network_consistancy(), "Marabou network is not consistent with the target network!!!"
         return self.marabou_net
 
     def check_network_consistancy(self)->bool:
         """
             check if the built marabou_net is actually equivalent to the original net
+            Strat: generate a random input, and run it through both network. The outputs should be similar, up 
+            to a threshold
         """
-        raise NotImplementedError
+        if self.marabou_net is None:
+            return False
+
+        input_shape: Tuple[int] = self.marabou_net.inputVars[0].shape
+        dummy_inputs: List[torch.Tensor] = [torch.rand(input_shape)]
+        marabou_output: List[np.ndarray] = self.marabou_net.evaluateWithMarabou(inputValues=dummy_inputs)
+        internal_output: torch.Tensor = self.forward(torch.stack(dummy_inputs))
+
+        marabou_output_flat:torch.Tensor = torch.Tensor(marabou_output[0]).squeeze().flatten()
+        internal_output_flat:torch.Tensor = internal_output[0].squeeze().flatten()
+        for idx in range(len(marabou_output_flat)):
+            if abs(marabou_output_flat[idx] - internal_output_flat[idx]) > THRESHOLD:
+                logging.info("Built marabou network is NOT consistent\n Test outputs:{} != {}".format(marabou_output_flat, internal_output_flat))
+                return False
+        logging.info("Built marabou network is consistent. Test outputs:{} vs {}".format(marabou_output_flat, internal_output_flat))
+        return True
+        
 
     def reset_hooks(self):
         self.tensor_log = {}
