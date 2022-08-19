@@ -4,18 +4,15 @@ This script will try to check if a ReLU pattern is good enough to prove the outc
 """
 
 import json
-import re
-from typing import Set, Tuple, List
+from typing import Tuple, List
 import numpy as np
 from maraboupy import Marabou, MarabouCore, MarabouUtils
 import logging
 import pandas
 
-from torch import double
-
-PATH = '/home/nle/workspace/VerifyNNE/datasets/ACAS/acas_nets/ACASXU_run2a_1_3_batch_2000.nnet'
+PATH = 'datasets/ACAS/acas_nets/ACASXU_run2a_1_3_batch_2000.nnet'
 EPSILON = 0.005
-PATTERN_PATH = '/home/nle/workspace/VerifyNNE/datasets/ACAS/relu_patterns.json'
+PATTERN_PATH = 'datasets/ACAS/relu_patterns.json'
 MAX_TIME = 300 #in seconds
 M_OPTIONS: MarabouCore.Options = Marabou.createOptions(verbosity=0,
                                   timeoutInSeconds=MAX_TIME
