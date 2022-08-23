@@ -42,11 +42,11 @@ class Node:
     def compute_zonotope(self)->Zonotope:
         raise NotImplementedError
 
-    def val(self):
+    def val(self)->float:
         raise NotImplementedError
 
 class Input(Node):
-    def __init__(self, val:float):
+    def __init__(self, val:float = float('inf')):
         super().__init__()
         self._val = val
     def compute_interval(self)->Interval:
@@ -55,7 +55,7 @@ class Input(Node):
     def compute_zonotope(self)->Zonotope:
         assert not self.zonotope.is_empty(), "The input zonotope is empty!"
         return self.zonotope
-    def val(self):
+    def val(self)->float:
         return self._val
 
 class Linear(Node):
@@ -76,8 +76,8 @@ class Linear(Node):
         self._val = res
         return self._val
     def compute_interval(self)->Interval:
-        addend_mins = []
-        addend_maxs = []
+        addend_mins:List[float] = []
+        addend_maxs:List[float] = []
         for input, coeff in self.addends:
             input_interval = input.compute_interval()
             addend_mins.append(min(coeff*input_interval.lower, coeff*input_interval.upper))
@@ -127,7 +127,7 @@ class Relu(Node):
             slope = input_upper/(input_upper - input_lower)
             center = input_upper*(1-slope)/2
             n_gens = len(input_zonotope.cs)
-            new_cs = [0]*(n_gens+1)
+            new_cs:List[float] = [0]*(n_gens+1)
             new_cs[0] = slope*input_zonotope.cs[0] + center
             for i in range(1, len(new_cs)-1):
                 new_cs[i] = slope*input_zonotope.cs[i]
@@ -141,12 +141,8 @@ class Relu(Node):
 
 
 def main():
-    x0 = Input(0.7)
-    x0.interval = Interval(0.7, 1)
-    x0.zonotope = Zonotope(); x0.zonotope.cs=[0.85, 0.15, 0]
-    x1 = Input(0.7)
-    x1.interval = Interval(0.7, 1)
-    x1.zonotope = Zonotope(); x1.zonotope.cs=[0.85, 0, 0.15]
+    x0 = Input(); x1 = Input()
+    x1 = Input()
 
     z0 = Linear()
     z0.add_addends([(x0, 4.3744),(x1, -4.8)])
@@ -154,7 +150,6 @@ def main():
     z1.add_addends([(x0, -3.8103), (x1, 3.4598)])
 
     h0 = Relu(z0); h1 = Relu(z1)
-    print("h0v", h0.val(), "h1v", h1.val())
     y0 = Linear()
     y0.add_addends([(h0, -3.2355), (h1, -4.8071)])
     y0.add_bias(4.7557)
@@ -166,18 +161,38 @@ def main():
     output = Linear()
     output.add_addends([(y0, 1),(y1, -1)])
 
-    print(output.val())
+    #--------------verify using interval abstraction
+    x0.interval = Interval(0, 0.3)
+    x1.interval = Interval(0, 0.3)
     print(output.compute_interval())
-    assert output.compute_interval().contains(output.val())
-    print("-------")
-    print(x0.compute_zonotope())
-    print(x1.compute_zonotope())
-    print("z0", z0.val(), z0.compute_zonotope(), z0.compute_zonotope().compute_interval())
-    print("z0i", z0.compute_interval())
-    print("z1", z1.val(), z1.compute_zonotope(), z1.compute_zonotope().compute_interval())
-    print("h0z", h0.compute_zonotope())
-    print("h1z", h1.compute_zonotope(), h1.compute_zonotope().compute_interval())
-    print(z0.compute_zonotope().compute_interval())
+    x0.interval = Interval(0, 0.3)
+    x1.interval = Interval(0.7, 1)
+    print(output.compute_interval())
+
+    x0.interval = Interval(0.7, 1)
+    x1.interval = Interval(0, 0.3)
+    print(output.compute_interval())
+
+    x0.interval = Interval(0.7, 1)
+    x1.interval = Interval(0.7, 1)
+    print(output.compute_interval())
+
+    #-------------verify using zonotope abstraction
+    x0.zonotope = Zonotope(); x0.zonotope.cs=[0.15, 0.15, 0]
+    x1.zonotope = Zonotope(); x1.zonotope.cs=[0.15, 0, 0.15]
     print(output.compute_zonotope().compute_interval())
+
+    x0.zonotope = Zonotope(); x0.zonotope.cs=[0.15, 0.15, 0]
+    x1.zonotope = Zonotope(); x1.zonotope.cs=[0.85, 0, 0.15]
+    print(output.compute_zonotope().compute_interval())
+
+    x0.zonotope = Zonotope(); x0.zonotope.cs=[0.85, 0.15, 0]
+    x1.zonotope = Zonotope(); x1.zonotope.cs=[0.15, 0, 0.15]
+    print(output.compute_zonotope().compute_interval())
+
+    x0.zonotope = Zonotope(); x0.zonotope.cs=[0.85, 0.15, 0]
+    x1.zonotope = Zonotope(); x1.zonotope.cs=[0.85, 0, 0.15]
+    print(output.compute_zonotope().compute_interval())
+
 if __name__=="__main__":
     main()
