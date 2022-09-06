@@ -57,37 +57,41 @@ class BaseNet(nn.Module):
         self.gradient_log = {}
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
-        self.marabou_net: MarabouNetwork
+        self.marabou_forward_net: MarabouNetwork
+        self.marabou_backward_net: MarabouNetwork
 
-    def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
+    def build_marabou_forward_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
         """
             convert the network to MarabouNetwork
         """
         tempf = tempfile.NamedTemporaryFile()
         torch.onnx.export(self, dummy_input, tempf.name, verbose=False)
-        self.marabou_net = Marabou.read_onnx(tempf.name)
-        assert self.check_network_consistancy(), "Marabou network is not consistent with the target network!!!"
-        return self.marabou_net
+        self.marabou_forward_net = Marabou.read_onnx_plus(tempf.name)
+        assert self.check_network_consistancy(verbosity=10000000), "Marabou network is not consistent with the target network!!!"
+        return self.marabou_forward_net
 
-    def check_network_consistancy(self)->bool:
+    def build_marabou_backward_net(self, target:int)->MarabouNetwork:
+        self.marabou_backward_net = self.marabou_forward_net.build_backward(target = target)
+        return self.marabou_backward_net
+    def check_network_consistancy(self, verbosity:int = 0)->bool:
         """
             check if the built marabou_net is actually equivalent to the original net
             Strat: generate a random input, and run it through both network. The outputs should be similar, up 
             to a threshold
         """
-        if self.marabou_net is None:
+        if self.marabou_forward_net is None:
             return False
-
-        input_shape: Tuple[int] = self.marabou_net.inputVars[0].shape
+        options = Marabou.createOptions(verbosity = verbosity)
+        input_shape: Tuple[int] = self.marabou_forward_net.inputVars[0].shape
         dummy_inputs: List[torch.Tensor] = [torch.rand(input_shape)]
-        marabou_output: List[np.ndarray] = self.marabou_net.evaluateWithMarabou(inputValues=dummy_inputs)
+        marabou_output: List[np.ndarray] = self.marabou_forward_net.evaluateWithMarabou(inputValues=dummy_inputs, options=options)
         internal_output: torch.Tensor = self.forward(torch.stack(dummy_inputs))
 
         marabou_output_flat:torch.Tensor = torch.Tensor(marabou_output[0]).squeeze().flatten()
         internal_output_flat:torch.Tensor = internal_output[0].squeeze().flatten()
         for idx in range(len(marabou_output_flat)):
             if abs(marabou_output_flat[idx] - internal_output_flat[idx]) > THRESHOLD:
-                logging.info("Built marabou network is NOT consistent\n Test outputs:{} != {}".format(marabou_output_flat, internal_output_flat))
+                print("Built marabou network is NOT consistent\n Test outputs:{} != {}".format(marabou_output_flat, internal_output_flat))
                 return False
         logging.info("Built marabou network is consistent. Test outputs:{} vs {}".format(marabou_output_flat, internal_output_flat))
         return True
