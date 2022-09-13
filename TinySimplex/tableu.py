@@ -199,4 +199,15 @@ if __name__=="__main__":
     q.add_constraint([(-10,0), (1,1)], -5)
     q.to_simplex()
     print(q.dump_simplex())
-    print(q.solve())
+    res = q.solve()
+    target = [-2/3, 2/3, 0, 2, 22/3]
+    for i in range(len(res)):
+        assert abs(res[i] - target[i]) <=10**-6, print(res[i], "!=", target[i])
+
+    q2 = LPQuery()
+    q2.add_constraint([(1,0), (1,1)], 0)
+    q2.add_constraint([(-1,0), (-2,1)], 2)
+    q2.add_constraint([(-1,0), (1,1)], 1)
+    q2.to_simplex()
+    print(q2.solve())
+    assert q2.solve() is None
