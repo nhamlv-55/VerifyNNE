@@ -6,12 +6,12 @@ import logging
 import copy
 import numpy as np
 from typing import Any, Callable, List, Dict, Tuple
-from maraboupy import Marabou
+from maraboupy import Marabou, MarabouCore
 from maraboupy.MarabouNetwork import MarabouNetwork
 
 import tempfile
 
-THRESHOLD = 10**-10
+THRESHOLD = 10**-6
 
 def get_activation(name: str, tensor_logger: Dict[str, Any], 
                     detach: bool = True, is_lastlayer:bool = False)->Callable[..., None]:
@@ -57,22 +57,23 @@ class BaseNet(nn.Module):
         self.gradient_log = {}
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
-        self.marabou_forward_net: MarabouNetwork
-        self.marabou_backward_net: MarabouNetwork
-
-    def build_marabou_forward_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
+        self.marabou_net: MarabouNetwork
+        
+    def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
         """
             convert the network to MarabouNetwork
         """
         tempf = tempfile.NamedTemporaryFile()
         torch.onnx.export(self, dummy_input, tempf.name, verbose=False)
-        self.marabou_forward_net = Marabou.read_onnx_plus(tempf.name)
-        assert self.check_network_consistancy(verbosity=10000000), "Marabou network is not consistent with the target network!!!"
-        return self.marabou_forward_net
+        self.marabou_net = Marabou.read_onnx_plus(tempf.name)
+        return self.marabou_net
 
-    def build_marabou_backward_net(self, target:int)->MarabouNetwork:
-        self.marabou_backward_net = self.marabou_forward_net.build_backward(target = target)
-        return self.marabou_backward_net
+    def build_marabou_ipq(self,target:int)->MarabouCore.InputQuery:
+        fw_ipq = self.marabou_net.getMarabouQuery()
+        ipq = self.marabou_net.addBackwardQuery(target=target)
+        return ipq
+
+
     def check_network_consistancy(self, verbosity:int = 0)->bool:
         """
             check if the built marabou_net is actually equivalent to the original net
