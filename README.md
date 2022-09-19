@@ -37,3 +37,12 @@ To kill it, in a different terminal, run
 pkill -f marabou_acas.py
 ```
 You may need to run the `pkill` command multiple times.
+
+## Marabou's InputQuery format
+```
+    unsigned numVars = atoi( input->readLine().trim().ascii() );
+    unsigned numLowerBounds = atoi( input->readLine().trim().ascii() );
+    unsigned numUpperBounds = atoi( input->readLine().trim().ascii() );
+    unsigned numEquations = atoi( input->readLine().trim().ascii() );
+    unsigned numConstraints = atoi( input->readLine().trim().ascii() );
+```
