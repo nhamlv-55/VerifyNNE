@@ -1,6 +1,6 @@
 from typing import List, Tuple
 class Interval:
-    def __init__(self, lower = float('-inf'), upper = float('inf')):
+    def __init__(self, lower:float = float('-inf'), upper:float = float('inf')):
         self.lower = lower
         self.upper = upper
     def __str__(self):
@@ -162,6 +162,7 @@ def main():
     output.add_addends([(y0, 1),(y1, -1)])
 
     #--------------verify using interval abstraction
+    print("Bounds computed using Box Abstraction")
     x0.interval = Interval(0, 0.3)
     x1.interval = Interval(0, 0.3)
     print(output.compute_interval())
@@ -178,6 +179,7 @@ def main():
     print(output.compute_interval())
 
     #-------------verify using zonotope abstraction
+    print("Bounds computed using Zonotope Abstraction")
     x0.zonotope = Zonotope(); x0.zonotope.cs=[0.15, 0.15, 0]
     x1.zonotope = Zonotope(); x1.zonotope.cs=[0.15, 0, 0.15]
     print(output.compute_zonotope().compute_interval())
