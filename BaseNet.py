@@ -68,9 +68,9 @@ class BaseNet(nn.Module):
         self.marabou_net = Marabou.read_onnx_plus(tempf.name)
         return self.marabou_net
 
-    def build_marabou_ipq(self,target:int)->MarabouCore.InputQuery:
+    def build_marabou_ipq(self)->MarabouCore.InputQuery:
         fw_ipq = self.marabou_net.getMarabouQuery()
-        ipq = self.marabou_net.addBackwardQuery(target=target)
+        ipq = self.marabou_net.addBackwardQuery()
         return ipq
 
 
