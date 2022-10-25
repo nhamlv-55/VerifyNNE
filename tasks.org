@@ -1,5 +1,8 @@
 * DONE Read NNet
 * DONE Run ACAS to get Relu pattern
-* TODO Get ACAS saliency map
-* DONE Run all ACAS pattern
-* TODO Run ACAS pattern with smaller input range to observe some UNSAFE and scale from there
+* DONE Run Marabou with ACAS Relu pattern
+* DONE Get ACAS saliency map
+- Found the issue: in Preprocessor.cpp, at line 833, indices are recomputed. 
+However, this function based on Marabou's assumptions about variable ordering,
+which we break by introducing gradient variable! Currently the fix is to turn
+off variable elimination, but a better fix would be fix the ordering to be correct.
