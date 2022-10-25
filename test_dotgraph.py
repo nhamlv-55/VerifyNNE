@@ -1,10 +1,12 @@
-from typing import Dict, Optional
+from io import FileIO, TextIOWrapper
+from typing import Any, Dict, Optional, Tuple, List
+from AcasXuNet import AcasXu
 from BaseNet import BaseNet
 from maraboupy import MarabouCore, Marabou, MarabouUtils
 from maraboupy.MarabouNetwork import MarabouNetwork
 import torch
-
-
+from torch.utils.data import TensorDataset, DataLoader
+import numpy as np
 
 class ToyNet(BaseNet):
     def __init__(self):
@@ -20,6 +22,7 @@ class ToyNet(BaseNet):
 
         self.ln1 = torch.nn.Linear(2, 3, bias = False)
         self.ln2 = torch.nn.Linear(3, 2, bias = False)
+        self.ln3 = torch.nn.Linear(2, 2, bias = False)
         self.relu = torch.nn.ReLU()
         #fixed weight
         with torch.no_grad():
@@ -27,43 +30,26 @@ class ToyNet(BaseNet):
                                                                 [-.111, .112], 
                                                                 [-.121, .122]
                                                                 ]))
-            self.ln2.weight = torch.nn.Parameter(torch.Tensor([[.201, .202, .203],
-                                                                [.211, .212, .213]]))
+            self.ln2.weight = torch.nn.Parameter(torch.Tensor([[.201, -.202, .203],
+                                                                [.211, -.212, .213]]))
+            self.ln3.weight = torch.nn.Parameter(torch.Tensor([[.301, .302],
+                                                                [.311, .312]]))
     def forward(self, x: torch.Tensor)->torch.Tensor:
-        return self.ln2(self.relu(self.ln1(x)))
+        # return self.ln2(self.relu(self.ln1(x)))
+        return self.ln3(self.relu(self.ln2(self.relu(self.ln1(x)))))
         # return self.relu(self.ln1(x))
 
-
-
-
-toy = ToyNet()
-
-print("calculate using pytorch")
-input = torch.autograd.Variable(torch.Tensor([0.5, 0.8]), requires_grad=True)
-z1 = toy.ln1(input); z1.retain_grad()
-h1 = toy.relu(z1); h1.retain_grad()
-out = toy.ln2(h1); out.retain_grad()
-# out = h1
-print("*", toy(input), out)
-assert torch.equal(toy(input), out), "networks are not the same"
-
-loss = out[0]
-loss.backward(retain_graph = True)
-print(input, input.grad)
-print(z1, z1.grad)
-print(h1, h1.grad)
-print(out, out.grad)
-
 #helper function
-def set_default_bound(ipq: MarabouCore.InputQuery, n_vars: int):
-    for v in range(n_vars):
-        ipq.setLowerBound(v, -1.0)
-        ipq.setUpperBound(v, 1.0)
+def set_default_bound(ipq: MarabouCore.InputQuery, range: List[int], l: float, u: float):
+    for v in range:
+        ipq.setLowerBound(v, l)
+        ipq.setUpperBound(v, u)
 
-def build_saliency_mask_query(network: BaseNet, input: Optional[torch.Tensor], target: int)->MarabouCore.InputQuery:
-    marabou_net = network.build_marabou_net(dummy_input=torch.Tensor([1, -0.5]))
-    ipq:MarabouCore.InputQuery = network.build_marabou_ipq(target=0)
-    set_default_bound(ipq, marabou_net.numVars*2)
+def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input: Optional[torch.Tensor], target: int)->MarabouCore.InputQuery:
+    marabou_net = network.build_marabou_net(dummy_input=dummy_input)
+    ipq:MarabouCore.InputQuery = network.build_marabou_ipq()
+    set_default_bound(ipq, range(marabou_net.numVars), -10, 10)
+    set_default_bound(ipq, range(marabou_net.numVars, marabou_net.numVars*2), -10, 10)
     #set input
     if input is not None:
         for vid, v in enumerate(marabou_net.inputVars[0]):
@@ -82,7 +68,64 @@ def build_saliency_mask_query(network: BaseNet, input: Optional[torch.Tensor], t
 
     return ipq
 
-ipq = build_saliency_mask_query(toy, input, 0)
-MarabouCore.saveQuery(ipq, "finalQuery")
+def run_toy():
+    def _write(o:Any, f: TextIOWrapper):
+        print(o)
+        if type(o)==torch.Tensor:
+            f.write(np.array2string(o.detach().numpy())+"\n")
+        else:
+            f.write(o.str()+"\n")
+    toy = ToyNet()
+    input = torch.autograd.Variable(torch.Tensor([-0.5, 0.8]), requires_grad=True)
+    print("calculate using pytorch")
+    z1 = toy.ln1(input); z1.retain_grad()
+    h1 = toy.relu(z1); h1.retain_grad()
+    z2 = toy.ln2(h1); z2.retain_grad()
+    h2 = toy.relu(z2); h2.retain_grad()
+    out = toy.ln3(h2); out.retain_grad()
+    # out = h1
+    # out = z2
+    print("*", toy(input), out)
+    assert torch.equal(toy(input), out), "networks are not the same"
 
-# fw_marabou_net.saveQuery("ToyNetForwardQuery")
+    loss = out[0]
+    loss.backward(retain_graph = True)
+    print(input, input.grad)
+    with open("true_values.txt", "w") as f:
+        _write(z1, f)
+        _write(z1.grad, f)
+        _write(h1, f)
+        _write(h1.grad, f)
+        _write(z2, f)
+        _write(z2.grad, f)
+        _write(h2, f)
+        _write(h2.grad, f)
+        _write(out, f)
+        _write(out.grad, f)
+    ipq = build_saliency_mask_query(toy, dummy_input=torch.Tensor([0, 0]), input = input, target = 0)
+    MarabouCore.saveQuery(ipq, "finalQuery")
+def run_acas():
+    PATH = '/home/nle/workspace/VerifyNNE/datasets/ACAS/acas_nets/ACASXU_run2a_1_1_batch_2000.nnet'
+    network = AcasXu(PATH)
+    print(network.means)
+    print("min", network.mins)
+    print("max", network.maxs)
+    dataset: Tuple[torch.Tensor] = torch.load('/home/nle/workspace/VerifyNNE/datasets/ACAS/acas_nets/AcasNetID<1,1>-normed-train.pt')
+
+    dataset_train = TensorDataset(dataset[0], dataset[1])
+    print(dataset[0].shape, dataset[1].shape)
+    print(dataset_train[0])
+
+
+    sample_input, sample_output = dataset_train[0]
+
+    print(network.forward(sample_input, verbose=True))
+    print(network.global_bounds)
+    saliency_map = network.compute_saliency_map(label=0, x = sample_input.unsqueeze(0))
+    print("Saliency map:", saliency_map)
+    ipq = build_saliency_mask_query(network, dummy_input=torch.Tensor([0, 0, 0, 0, 0]), input = sample_input, target = sample_output.item())
+
+    MarabouCore.saveQuery(ipq, "finalQuery")
+
+    # fw_marabou_net.saveQuery("ToyNetForwardQuery")
+run_toy()
