@@ -105,7 +105,8 @@ for l in values_lines:
     varname, attributes = var_parser.parse(l.strip())
     values[varname] = attributes
 
-print(values)
+for v in values:
+    print(v, "=", values[v]["value"])
 
 eq_raws = "".join(eq_lines)
 print(eq_raws)
