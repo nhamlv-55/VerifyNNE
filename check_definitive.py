@@ -19,7 +19,7 @@ M_OPTIONS: MarabouCore.Options = Marabou.createOptions(verbosity=0,
                                                        numWorkers=6
                                                        )
 
-PATTERN_PATH = 'datasets/MNIST/mnist_relu_patterns_0.json'
+PATTERN_PATH = 'datasets/MNIST/mnist_relu_patterns_0.01.json'
 
 RESULT_CSV = open("DEF_NAP.csv", "w")
 with open(PATTERN_PATH, "r") as f:
