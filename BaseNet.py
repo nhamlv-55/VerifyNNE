@@ -58,7 +58,7 @@ class BaseNet(nn.Module):
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
         self.marabou_net: MarabouNetwork
-        
+        self.pytorch_net: nn.Module 
     def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
         """
             convert the network to MarabouNetwork
