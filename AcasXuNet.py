@@ -35,7 +35,7 @@ class AcasXu(BaseNet):
         self.maxs: List[float] = []
         self.layers = nn.ModuleList()
         self.read_acas(AcasPath)
-
+        self.global_bounds: List[float] = [float('inf'), float('-inf')]
     def read_acas(self, AcasPath: str)->None:
         """
         Borrow from https://github.com/XuankangLin/ART/blob/master/art/acas.py
@@ -182,12 +182,11 @@ class AcasXu(BaseNet):
         t *= self.ranges[-1]
         t += self.means[-1]
         return t
-    def forward(self, x: Tensor)->Tensor:
+    def forward(self, x: Tensor, verbose:bool = False)->Tensor:
         """ Normalization and Denomalization are called outside this method. """
         lin: torch.nn.Module
         for lid, lin in enumerate(self.layers[:-1]):
             x = lin(x)
-            if(x.shape[0]==1): print(lid, x)
             x = F.relu(x)
 
         x = self.layers[-1](x)
