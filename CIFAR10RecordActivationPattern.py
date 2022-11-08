@@ -10,7 +10,8 @@ import shutil
 from sklearn.metrics import confusion_matrix, accuracy_score
 import sys
 
-idx = int(sys.argv[1])
+whichset = sys.argv[1]
+idx = int(sys.argv[2])
 """
 Load CIFAR10 dataset
 """
@@ -28,15 +29,17 @@ batch_size = 4
 Load a Marabou net for CIFAR 10
 """
 from maraboupy import Marabou, MarabouCore, MarabouUtils
-from onnx2pytorch import ConvertModel
-import onnx
 import numpy as np
 
 PATH='datasets/CIFAR10/marabou-cifar10/nets/cifar10_small.onnx'
 marabou_network = Marabou.read_onnx(PATH)
-onnx_model = onnx.load(PATH)
-pytorch_model = ConvertModel(onnx_model)
-print(pytorch_model)
+check_loaded_model = False
+if check_loaded_model:
+    import onnx
+    from onnx2pytorch import ConvertModel
+    onnx_model = onnx.load(PATH)
+    pytorch_model = ConvertModel(onnx_model)
+    print(pytorch_model)
 
 
 
@@ -45,7 +48,7 @@ print(pytorch_model)
 """
 Check accuracy of the loaded model. Expected: 74.16%
 """
-def check_loaded_model():
+def check_model():
     true_labels = []
     pred_labels = []
     for idx in range(len(test_images)):
@@ -66,7 +69,7 @@ def check_loaded_model():
 Setup filenames
 """
 model_name = os.path.basename(PATH)
-train_set = True
+train_set = (whichset == "trainset")
 if train_set:
     imageset = train_images
     labelset = train_labels
@@ -93,7 +96,6 @@ _, outputDict = marabou_network.evaluate(input, filename="{}.log".format(idx))
 pred_label = np.argmax(_)
 print(pred_label)
 print(true_label)
-print(pytorch_model(torch.Tensor(input)))
 
 
 # %%
