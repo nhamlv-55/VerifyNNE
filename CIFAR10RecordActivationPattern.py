@@ -77,8 +77,9 @@ else:
     prefix = "testset_{}".format(model_name)
 
 if os.path.exists(prefix):
-    shutil.rmtree(prefix)
-    os.mkdir(prefix)
+    pass
+    # shutil.rmtree(prefix)
+    # os.mkdir(prefix)
 else:
     os.mkdir(prefix)
 
@@ -87,7 +88,11 @@ RELUDICT_PATH = "{}/reluDict_{}.json".format(prefix, idx)
 RELUBITMAP_PATH = "{}/reluBitmap_{}.txt".format(prefix, idx)
 
 input = (imageset[idx]/255).astype(np.float32).reshape(1,32,32,3)
+true_label = labelset[idx][0]
 _, outputDict = marabou_network.evaluate(input, filename="{}.log".format(idx))
+pred_label = np.argmax(_)
+print(pred_label)
+print(true_label)
 print(pytorch_model(torch.Tensor(input)))
 
 
@@ -95,9 +100,9 @@ print(pytorch_model(torch.Tensor(input)))
 """write the relu values out"""
 print(len(outputDict))
 print(len(marabou_network.reluList))
-relu_dict = {}
+relu_dict = {"pred_label": int(pred_label), "true_label": int(true_label), "relu_dict": {}}
 for i, o in marabou_network.reluList:
-    relu_dict[str(i)] = outputDict[i]
+    relu_dict["relu_dict"][str(i)] = outputDict[i]
 res = {"outputDict": outputDict, "reluList": marabou_network.reluList}
 np.save(IMAGE_PATH, input)
 with open(RELUDICT_PATH, "w") as f:
@@ -107,6 +112,7 @@ with open(RELUBITMAP_PATH, "w") as f:
     for i, o in marabou_network.reluList:
         if outputDict[i] <=0: res_str+="0"
         else: res_str+="1"
+    f.write("{} {}\n".format(pred_label, true_label))
     f.write(res_str)
 
 
@@ -114,9 +120,9 @@ with open(RELUBITMAP_PATH, "w") as f:
 # %%
 """ Check if the written files are correct """
 with open(RELUDICT_PATH, "r") as f:
-    loaded_relu_dict = json.load(f)
+    loaded_relu_dict = json.load(f)["relu_dict"]
 with open(RELUBITMAP_PATH, "r") as f:
-    relu_map = f.readlines()[0].strip()
+    relu_map = f.readlines()[1].strip()
 
 assert len(relu_map) == len(loaded_relu_dict.keys()), print(len(relu_map), "!=", len(loaded_relu_dict.keys()))
 relu_keys = sorted(loaded_relu_dict.keys())
