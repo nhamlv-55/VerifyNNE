@@ -6,3 +6,7 @@
 However, this function based on Marabou's assumptions about variable ordering,
 which we break by introducing gradient variable! Currently the fix is to turn
 off variable elimination, but a better fix would be fix the ordering to be correct.
+
+Issue: so far all the code is tested on the smaller toy Pytorch network, which is compiled to Matmul.
+The MNIST network are compiled to Gemm, and the converted marabou network doesnt seem to be working.
+I need to be able to have a small toy network using Gemm to test.
