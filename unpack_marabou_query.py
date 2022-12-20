@@ -24,6 +24,7 @@ def print_block(block: List[str], block_type: blockType) -> None:
         for l in block:
             print(l.strip())
     elif block_type == block_type.LINEAR:
+        eq_type = ["=", ">=", "<="]
         for l in block:
             tokens: List[str] = l.split(",")
             addends: List[Tuple[int, float]] = []
@@ -34,8 +35,9 @@ def print_block(block: List[str], block_type: blockType) -> None:
                 str_rep.append("{:.4f}*v{}".format(coeff, var_idx))
 
             assert addends[-1][1] == -1
-            line = "eq{}: v{} = {} + {}".format(tokens[0], #eq number
+            line = "eq{}: v{} {} {} + {}".format(tokens[0], #eq number
                                                 addends[-1][0],  # output
+                                                eq_type[int(tokens[1])],
                                                 # weightedsum
                                                 " + ".join(str_rep[1:-1]),
                                                 addends[0][1]  # bias
@@ -45,9 +47,56 @@ def print_block(block: List[str], block_type: blockType) -> None:
         for l in block:
             tokens: List[str] = l.strip().split(",")
             node_type:str = tokens[1]
+            #RELU constraints
             if node_type=="relu":
                 assert len(tokens)==4
                 print("eq{}: v{} = relu(v{})".format(tokens[0], tokens[2], tokens[3]))
+            #DISJUCTs
+            if node_type=="disj":
+                line="eq{}: ".format(tokens[0])
+                num_disj:int = int(tokens[2])
+                current_tok = 3
+                line+="{} djs\n".format(num_disj)
+                for disj_idx in range(num_disj):
+                    line+="disj {}\n".format(disj_idx)
+                    num_bounds = int(tokens[current_tok])
+                    current_tok+=1
+                    #parse the bounds in the disj
+                    for bound_idx in range(num_bounds):
+                        bound_types = {"l": "<=", "u": ">="}
+                        sign:str = bound_types[tokens[current_tok]]
+                        current_tok+=1
+                        var:int = int(tokens[current_tok])
+                        current_tok+=1
+                        bound_value:float = float(tokens[current_tok])
+                        current_tok+=1
+                        line+="\tv{} {} {}\n".format(var, sign, bound_value)
+
+                    num_eqs = int(tokens[current_tok])
+                    current_tok+=1
+                    #parse the eqs in the disj
+                    for eq_idx in range(num_eqs):
+                        eq_type = {"l": "", "g": "", "e": ""}
+                        sign:str = eq_type[tokens[current_tok]]
+                        current_tok+=1
+                        n_addends = int(tokens[current_tok])
+                        current_tok+=1
+                        addends: List[Tuple[int, float]] = []
+                        str_rep: List[str] = []
+
+                        for addend_idx in range(n_addends):
+                            coeff, var_idx = (
+                                float(tokens[current_tok]), int(tokens[current_tok+1]))
+                            current_tok+=2
+                            addends.append((var_idx, coeff))
+                            str_rep.append("{:.4f}*v{}".format(coeff, var_idx))
+
+                        scalar = float(tokens[current_tok])
+                        current_tok+=1
+                        line+= "\t{}={}\n".format(" + ".join(str_rep), scalar)
+                print(line)
+
+
     else:
         for l in block:
             print(l.strip())
