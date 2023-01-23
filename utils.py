@@ -1,12 +1,41 @@
 """
 Utility class to parse ACAS
 """
-from selectors import EpollSelector
 from typing import List, Tuple
 import torch
 import os
 from pysmt.smtlib.parser import SmtLibParser, SmtLibCommand
 from pysmt.fnode import FNode
+from maraboupy import MarabouCore
+
+"""
+A helper function to set the default bound for all nodes in the Marabou Input Query
+"""
+def set_default_bound(ipq: MarabouCore.InputQuery, range: List[int], l: float, u: float)->None:
+    for v in range:
+        ipq.setLowerBound(v, l)
+        ipq.setUpperBound(v, u)
+
+"""
+A helper function to convert entries in a saliency map to either -1 or 1.
+"""
+
+def normalize_sm(sm, k: int) -> Tuple[Any, Any, Any]:
+    """
+    expect sm to be flatten already
+    """
+    top_k_idx = np.argpartition(sm, -k)[-k:].tolist()
+    top_lowk_idx = np.argpartition(sm, k)[:k].tolist()
+    print(top_k_idx)
+    print(top_lowk_idx)
+    new_sm = np.array([0]*28*28)
+    for idx in top_k_idx:
+        new_sm[idx] = 1
+    for idx in top_lowk_idx:
+        new_sm[idx] = -1
+    return new_sm, top_k_idx, top_lowk_idx
+
+
 
 
 class CommaString(object):
