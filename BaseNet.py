@@ -58,7 +58,8 @@ class BaseNet(nn.Module):
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
         self.marabou_net: MarabouNetwork
-        self.pytorch_net: nn.Module 
+        self.pytorch_net: nn.Module
+        self.fw_ipq: MarabouCore.InputQuery 
     def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
         """
             convert the network to MarabouNetwork
@@ -69,7 +70,11 @@ class BaseNet(nn.Module):
         return self.marabou_net
 
     def build_marabou_ipq(self)->MarabouCore.InputQuery:
-        fw_ipq = self.marabou_net.getMarabouQuery()
+        """
+            build the Marabou Query from the internal marabou_net
+            Note: addBackwardQuery assumes the correct accumulateGrad 
+        """
+        self.fw_ipq = MarabouCore.InputQuery(self.marabou_net.getForwardQuery())
         ipq = self.marabou_net.addBackwardQuery()
         return ipq
 

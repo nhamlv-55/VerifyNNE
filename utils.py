@@ -1,13 +1,14 @@
 """
 Utility class to parse ACAS
 """
-from typing import List, Tuple
+from typing import Any, Dict, Optional, Tuple, List
 import torch
 import os
 from pysmt.smtlib.parser import SmtLibParser, SmtLibCommand
 from pysmt.fnode import FNode
 from maraboupy import MarabouCore
-
+import numpy as np
+from io import FileIO, TextIOWrapper
 """
 A helper function to set the default bound for all nodes in the Marabou Input Query
 """
@@ -15,7 +16,7 @@ def set_default_bound(ipq: MarabouCore.InputQuery, range: List[int], l: float, u
     for v in range:
         ipq.setLowerBound(v, l)
         ipq.setUpperBound(v, u)
-
+    return ipq
 """
 A helper function to convert entries in a saliency map to either -1 or 1.
 """
@@ -35,7 +36,15 @@ def normalize_sm(sm, k: int) -> Tuple[Any, Any, Any]:
         new_sm[idx] = -1
     return new_sm, top_k_idx, top_lowk_idx
 
-
+"""
+A helper function to write numpy array to file
+"""
+def _write(o: Any, f: TextIOWrapper):
+    print(o)
+    if type(o) == torch.Tensor:
+        f.write(np.array2string(o.detach().numpy())+"\n")
+    else:
+        f.write(o.str()+"\n")
 
 
 class CommaString(object):
