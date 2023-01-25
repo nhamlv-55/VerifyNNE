@@ -1,5 +1,5 @@
 # %%
-#cifar 10 dataset
+#MNIST 10 dataset
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -13,7 +13,7 @@ import sys
 whichset = sys.argv[1]
 idx = int(sys.argv[2])
 """
-Load CIFAR10 dataset
+Load MNIST dataset
 """
 transform = transforms.Compose(
     [transforms.ToTensor()])
