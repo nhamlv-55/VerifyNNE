@@ -5,7 +5,19 @@ human-friendly form
 import sys
 from typing import List, Tuple
 from enum import Enum
+import graphviz
+dot = graphviz.Digraph()
 input_file = sys.argv[1]
+
+
+def handle_addends(addends:List[Tuple[int, float]], color:str = 'black'):
+    global dot
+    assert addends[-1][1]==-1 #the output should be the last entry
+    for var_idx, coeff in addends[:-1]:
+        dot.edge('v{}'.format(var_idx), 'v{}'.format(addends[-1][0]), color=color)
+
+class edgeTypeColor(Enum):
+    RELU = 1
 
 
 class blockType(Enum):
@@ -35,6 +47,7 @@ def print_block(block: List[str], block_type: blockType) -> None:
                 str_rep.append("{:.4f}*v{}".format(coeff, var_idx))
 
             assert addends[-1][1] == -1
+            handle_addends(addends)
             line = "eq{}: v{} {} {} + {}".format(tokens[0], #eq number
                                                 addends[-1][0],  # output
                                                 eq_type[int(tokens[1])],
@@ -90,7 +103,7 @@ def print_block(block: List[str], block_type: blockType) -> None:
                             current_tok+=2
                             addends.append((var_idx, coeff))
                             str_rep.append("{:.4f}*v{}".format(coeff, var_idx))
-
+                        handle_addends(addends)
                         scalar = float(tokens[current_tok])
                         current_tok+=1
                         line+= "\t{}={}\n".format(" + ".join(str_rep), scalar)
@@ -120,6 +133,22 @@ n_outputs = int(raw[5+n_inputs+1].strip())
 output_node_lines = raw[5+n_inputs+1: 5+n_inputs+1+n_outputs+1]
 print_block(output_node_lines, blockType.OUTPUT_NODE_INFOS)
 
+#add vars to dot
+# for n in range(n_neurons):
+    # dot.node('v{}'.format(n))
+
+with dot.subgraph(name='cluster_input') as c:
+    c.edge_attr['style'] = 'invis'
+    c.edge_attr['weight'] = '10'
+    for idx in range(0, n_inputs-1):
+        c.edge('v{}'.format(idx), 'v{}'.format(idx+1))
+
+with dot.subgraph(name='cluster_output') as c:
+    c.edge_attr['style'] = 'invis'
+    c.edge_attr['weight'] = '10'
+    for idx in range(n_inputs, n_inputs+n_outputs-2):
+        c.edge('v{}'.format(idx), 'v{}'.format(idx+1))
+
 
 # lowerbounds
 
@@ -141,3 +170,6 @@ print_block(linear_lines, blockType.LINEAR)
 current_line +=n_eqs
 nonlin_lines = raw[current_line:]
 print_block(nonlin_lines, blockType.NONLINEAR)
+
+# print("start rendering...", file=sys.stderr)
+# dot.render('dot', format='pdf')
