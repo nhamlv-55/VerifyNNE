@@ -1,3 +1,4 @@
+from onnx import numpy_helper
 from onnx2pytorch import ConvertModel
 import onnx
 from typing import Any, Dict, Optional, Tuple, List
@@ -12,12 +13,13 @@ from torch.utils.data import TensorDataset, DataLoader
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import numpy as np
-from utils import set_default_bound, _write, normalize_sm 
+from utils import set_default_bound, _write, normalize_sm
 root = 'datasets/MNIST/'
 trans = transforms.Compose([transforms.ToTensor(),
                             # transforms.Normalize((0.5,), (1.0,))
                             ])
 train_new_network: bool = False
+load_vnn: bool = False
 plot: bool = True
 
 
@@ -47,12 +49,20 @@ test_inputs, test_labels = next(iter(test_loader))
 idx = 8753
 test_input = test_inputs[idx].squeeze()
 test_label = test_labels[idx]
-LABEL = test_label
-print("test label", test_label, idx)
+LABEL = 1
+print("LABEL", LABEL, idx)
+
+_model = onnx.load('datasets/MNIST/mnist-net_256x2.onnx')
+INTIALIZERS = _model.graph.initializer
+Weight = []
+for initializer in INTIALIZERS:
+    W = numpy_helper.to_array(initializer)
+    Weight.append(W)
+for w in Weight:
+    print(w.shape)
 
 
 class MNISTNet(BaseNet):
-
     def __init__(self):
         super().__init__()
         self.fc1 = torch.nn.Linear(28*28, 256)
@@ -60,6 +70,19 @@ class MNISTNet(BaseNet):
         self.fc2 = torch.nn.Linear(256, 256)
         self.fc3 = torch.nn.Linear(256, 10)
         self.relu = torch.nn.ReLU()
+
+    def load_vnn(self) -> None:
+        with torch.no_grad():
+            assert (len(Weight) == 6)
+            self.fc1.weight = torch.nn.Parameter(torch.Tensor(Weight[1]))
+            self.fc1.bias = torch.nn.Parameter(torch.Tensor(Weight[0]))
+
+            self.fc2.weight = torch.nn.Parameter(torch.Tensor(Weight[3]))
+            self.fc2.bias = torch.nn.Parameter(torch.Tensor(Weight[2]))
+
+            self.fc3.weight = torch.nn.Parameter(torch.Tensor(Weight[5]))
+            self.fc3.bias = torch.nn.Parameter(torch.Tensor(Weight[4]))
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = x.view(-1, 28*28)
         x = self.dropout(self.relu(self.fc1(x)))
@@ -72,6 +95,7 @@ class MNISTNet(BaseNet):
             Given an input tensor of shape (n_inputs, ...), returns
             a saliency map tensor of the same size. 
         """
+        self.eval()
         print("label", label)
         n_inputs: int = x.shape[0]
         x = torch.autograd.Variable(x, requires_grad=True)
@@ -83,11 +107,12 @@ class MNISTNet(BaseNet):
             saliency_map.append(x.grad[idx])
         return torch.stack(saliency_map)
 
+
 """
 Init
 """
 network = MNISTNet()
-optimizer = torch.optim.Adam(network.parameters(), lr = 0.001)
+optimizer = torch.optim.Adam(network.parameters(), lr=0.001)
 train_losses = []
 train_counter = []
 test_losses = []
@@ -97,6 +122,8 @@ test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
 """
 Testing
 """
+
+
 def test():
     network.eval()
     test_loss = 0
@@ -114,10 +141,13 @@ def test():
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
+
 """
 Training
 """
-def train(epoch:int):
+
+
+def train(epoch: int):
     network.train()
     for batch_idx, (data, target) in enumerate(train_loader):
         optimizer.zero_grad()
@@ -127,10 +157,12 @@ def train(epoch:int):
         print(loss)
         optimizer.step()
 
-def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input: Optional[torch.Tensor], target: int, high_intensity_nodes: List[int]) -> MarabouCore.InputQuery:
+
+def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input: Optional[torch.Tensor], 
+                            target: int, high_intensity_nodes: List[int], low_intensity_nodes: List[int]) -> MarabouCore.InputQuery:
 
     marabou_net = network.build_marabou_net(dummy_input=dummy_input)
-    ipq: MarabouCore.InputQuery = network.build_marabou_ipq() #type: ignore
+    ipq: MarabouCore.InputQuery = network.build_marabou_ipq()  # type: ignore
 
     """
     Extracting just the forward query. For debugging only
@@ -142,9 +174,7 @@ def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input
         for vid, v in enumerate(marabou_net.inputVars[0]):
             network.fw_ipq.setLowerBound(v, input[vid])
             network.fw_ipq.setUpperBound(v, input[vid])
-    Marabou.saveQuery(network.fw_ipq, "MNISTSaliencyQueryForward")
-
-
+    Marabou.saveQuery(network.fw_ipq, "MNISTSaliencyQueryForwardSmall")
 
     set_default_bound(ipq, range(marabou_net.numVars,
                       marabou_net.numVars*2), -10, 10)
@@ -156,7 +186,7 @@ def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input
     # set grad
     print("output vars", marabou_net.outputVars)
     for vid, v in enumerate(marabou_net.outputVars[0][0]):
-        grad_v:int = v + marabou_net.numVars
+        grad_v: int = v + marabou_net.numVars
         if vid == target:
             print("setting v {} to 1".format(grad_v))
             ipq.setLowerBound(grad_v, 1)
@@ -167,30 +197,43 @@ def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input
 
     # add the saliency map constraints
     # the last node is used to extract the max
-    add_grad_const = False
+    add_grad_const = True
     if add_grad_const:
         max_node_idx = marabou_net.numVars*2
         ipq.setNumberOfVariables(marabou_net.numVars*2+1)
-        set_default_bound(ipq, [max_node_idx], -10, 10)
+        set_default_bound(ipq, [max_node_idx], -1, 1)
         n_input_nodes = dummy_input.flatten().shape[0]
-        low_intensity_nodes = set(range(n_input_nodes)) - \
-            set(high_intensity_nodes)
-        # the last node is max of all low_intensity nodes
-        MarabouCore.addMaxConstraint(ipq, low_intensity_nodes, max_node_idx)
-        # ipq.addMaxConstraint(low_intensity_nodes, max_node_idx)
-        # all the high intensity nodes must have values greater than that node
-        # pos_condition = MarabouUtils.Equation(MarabouCore.Equation.LE)
-        # pos_condition.addAddend(1, self.reluList[i][0]);
-        # pos_condition.setScalar(0)
-        for v in high_intensity_nodes:
-            constraint = MarabouUtils.Equation(MarabouCore.Equation.GE)
-            constraint.addAddend(1, v)
+        if len(low_intensity_nodes)==0:
+            low_intensity_nodes = set(range(n_input_nodes)) - set(high_intensity_nodes)
+        print(low_intensity_nodes)
+
+        # create a dummy node (the last node)
+        # the last node is greater than all low_intensity_nodes
+        # and the last node is smaller than all high_intensity_nodes
+        for v in low_intensity_nodes:
+            assert v <= n_input_nodes, "low intensity node is not in the set of input nodes"
+            constraint = MarabouUtils.Equation(MarabouCore.Equation.LE)
+            constraint.addAddend(1, v+marabou_net.numVars)
             constraint.addAddend(-1, max_node_idx)
             constraint.setScalar(0)
 
+            print("low intensity node const:", constraint)
             ipq.addEquation(constraint.toCoreEquation())
 
+        for v in high_intensity_nodes:
+            assert v <= n_input_nodes, "high intensity is not in the set of input nodes"
+            constraint = MarabouUtils.Equation(MarabouCore.Equation.GE)
+            constraint.addAddend(1, v+marabou_net.numVars)
+            constraint.addAddend(-1, max_node_idx)
+            constraint.setScalar(0)
+
+            print("high intensity node const:", constraint)
+            ipq.addEquation(constraint.toCoreEquation())
+
+    print(high_intensity_nodes)
+
     return ipq
+
 
 def main():
     if train_new_network:
@@ -200,37 +243,46 @@ def main():
 
         torch.save(network.state_dict(), 'model{}.pth'.format(time.time()))
     else:
-        network.load_state_dict(torch.load("model1673967689.4435592.pth"))
-        network.eval()
+        if load_vnn:
+            network.load_vnn()
+        else:
+            network.load_state_dict(torch.load("model1673967689.4435592.pth"))
+            network.eval()
     zero_input: torch.autograd.Variable = torch.autograd.Variable(
         torch.Tensor([[0]*28*28]), requires_grad=True)
 
-    # input = zero_input
-    input = torch.autograd.Variable(test_input.reshape(1, 28*28), requires_grad = True)
-    out = network(input)
-    loss = out[0][test_label]
+    INPUT = zero_input
+    # input = torch.autograd.Variable(test_input.reshape(1, 28*28), requires_grad = True)
+
+    print(network)
+    out = network(INPUT)
+    loss = out[0][LABEL]
     loss.backward(retain_graph=True)
-    with open("MNIST_saliency_check_true_values.txt", "w") as f:
-        _write(input, f)
-        _write(input.grad, f)
+    with open("MNIST_saliency_check_true_values_small.txt", "w") as f:
+        _write(INPUT, f)
+        _write(INPUT.grad, f)
         _write(out, f)
 
     saliency_map = network.compute_saliency_map(
-        test_input.unsqueeze(dim=0), LABEL)
+        INPUT.unsqueeze(dim=0), LABEL)
+    with open("saliency_map", "w") as f:
+        _write(saliency_map, f)
     final_sm, top_k_idx, top_lowk_idx = normalize_sm(
-        saliency_map.reshape(28*28), k=100)
+        saliency_map.reshape(28*28), k=10)
     if plot:
         fig, axs = plt.subplots(3)
-        axs[0].imshow(test_input.squeeze().detach().numpy())    
-        axs[1].imshow(final_sm.reshape(28,28), cmap='gray')
-        axs[2].imshow(saliency_map.reshape(28,28), cmap='gray')
+        axs[0].imshow(INPUT.detach().numpy().reshape(28, 28))
+        axs[1].imshow(final_sm.reshape(28, 28), cmap='gray')
+        axs[2].imshow(saliency_map.reshape(28, 28), cmap='gray')
         plt.savefig('plot.pdf')
+
     ipq = build_saliency_mask_query(network=network,
                                     dummy_input=torch.Tensor([0]*28*28),
-                                    input=input.reshape(28*28),
-                                    target=test_label,
-                                    high_intensity_nodes=top_k_idx)
-    Marabou.saveQuery(ipq, "MNISTSaliencyQuery")
+                                    input=INPUT.reshape(28*28),
+                                    target=LABEL,
+                                    high_intensity_nodes=top_k_idx,
+                                    low_intensity_nodes=top_lowk_idx)
+    Marabou.saveQuery(ipq, "MNISTSaliencyQuerySmall")
 
 
 main()
