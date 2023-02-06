@@ -64,6 +64,7 @@ class BaseNet(nn.Module):
         """
             convert the network to MarabouNetwork
         """
+        self.eval()
         tempf = tempfile.NamedTemporaryFile()
         torch.onnx.export(self, dummy_input, tempf.name, verbose=False)
         self.marabou_net = Marabou.read_onnx_plus(tempf.name)
