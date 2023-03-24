@@ -1,14 +1,89 @@
 """
 Utility class to parse ACAS
 """
+from __future__ import annotations
 from typing import Any, Dict, Optional, Tuple, List
 import torch
 import os
 from pysmt.smtlib.parser import SmtLibParser, SmtLibCommand
 from pysmt.fnode import FNode
-from maraboupy import MarabouCore
+from maraboupy import MarabouCore, Marabou
 import numpy as np
 from io import FileIO, TextIOWrapper
+import json
+import random
+
+class Pattern:
+    def __init__(self):
+        self.activated: List[int] = []
+        self.deactivated: List[int] = []
+        self.n_fixed_relus = 0 
+
+    def finalize(self):
+        self.activated.sort()
+        self.deactivated.sort()
+        self.n_fixed_relus = len(self.activated) + len(self.deactivated)
+
+    def from_check_list(self, relu_check_list: List[int], relu_val: List[int]):
+        assert(len(relu_check_list) == len(relu_val))
+        for i in range(len(relu_check_list)):
+            if relu_val[i] < 2000:
+                self.deactivated.append(relu_check_list[i])
+            else:
+                self.activated.append(relu_check_list[i])
+
+        self.finalize()
+
+    def from_Marabou_output(self, mReluList: List[Tuple[int, int]], outputDict: Dict[int, float]):
+        offset = 28*28+10
+        for i, o in mReluList:
+            if outputDict[i] > 0:
+                self.activated.append(i-offset)
+            else:
+                self.deactivated.append(i-offset)
+         
+        self.finalize()
+
+    def strengthen(self, NAP_bar: Pattern, cex_pattern: Pattern)->None:
+        print("NAP_bar", NAP_bar)
+        print("cex_pattern", cex_pattern)
+        assert(set(cex_pattern.activated) >= set(self.activated))
+        assert(set(cex_pattern.deactivated) >= set(self.deactivated))
+        delta_A = set(NAP_bar.activated).intersection( set(cex_pattern.activated) - set(self.activated))
+        delta_D = set(NAP_bar.deactivated).intersection( set(cex_pattern.deactivated) - set(self.deactivated))
+        delta_A = sorted(list(delta_A))
+        delta_D = sorted(list(delta_D))
+        print("delta_A:{}".format(delta_A))
+        print("delta D:{}".format(delta_D))
+        print("Strenthen NAP using CEX...")
+        rand = random.randint(0, 1)
+        if rand==0:
+            # flip_neuron = random.randint(0, len(delta_D)-1)
+            flip_neuron = delta_D[-1]
+            assert flip_neuron not in self.activated, "rand_neuron is in self.activated"
+            self.activated.append(flip_neuron)
+        else:
+            # flip_neuron = random.randint(0, len(delta_A)-1)
+            flip_neuron = delta_A[-1]
+            assert flip_neuron not in self.deactivated, "rand_neuron is in self.deactivated"
+            self.deactivated.append(flip_neuron)
+        print("flip {}".format(flip_neuron))
+        self.finalize()
+
+    def __str__(self) -> str:
+        return "A:{}\nD:{}".format(self.activated, self.deactivated) 
+
+
+def get_pattern(marabou_network: Marabou.MarabouNetwork, input: Any)->Pattern:
+    _, outputDict = marabou_network.evaluate(input)
+    pred_label = np.argmax(_)
+    print("pred label: {}".format(pred_label))
+    
+    pattern = Pattern()
+    pattern.from_Marabou_output(marabou_network.reluList, outputDict)
+
+    return pattern    
+
 """
 A helper function to set the default bound for all nodes in the Marabou Input Query
 """
@@ -89,6 +164,17 @@ class CommaString(object):
 """
 Utility class to read vnncomp benchmark
 """
+
+def parse_raw_idx(raw_idx: int) -> Tuple[int, int, int]:
+    """
+    only for MNIST 256xk network:
+    """
+    offset = 28*28+10
+    n_relus = 256
+    layer = raw_idx // n_relus
+    idx = raw_idx % n_relus
+    marabou_idx = 2*n_relus*layer + idx + offset
+    return layer, idx, marabou_idx
 
 
 def load_vnnlib(path: str) -> Tuple[torch.Tensor, float, int, List[int]]:
