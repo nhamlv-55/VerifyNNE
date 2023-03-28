@@ -1,20 +1,23 @@
 import json
 import os
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union, Dict, Set
 import numpy as np
 import matplotlib.pyplot as plt
 from maraboupy import Marabou, MarabouCore, MarabouUtils
+from vnncomp2021.benchmarks.cifar10_resnet.pytorch_model.attack_pgd import attack_pgd
 from utils import load_vnnlib, Pattern, get_pattern, parse_raw_idx
 import datetime
-
+from onnx2pytorch import ConvertModel
+import onnx
+import torch
 PATH = 'vnncomp2021/benchmarks/mnistfc/mnist-net_256x4.onnx'
 MAX_TIME = 1200  # in seconds
 np.random.seed(42)
 M_OPTIONS: MarabouCore.Options = Marabou.createOptions(verbosity=0,
-                                                       initialSplits=1,
+                                                       initialSplits=4,
                                                        timeoutInSeconds=MAX_TIME,
                                                        snc=True,
-                                                       numWorkers=4,
+                                                       numWorkers=8,
                                                        )
 
 
@@ -32,12 +35,30 @@ with open(PATTERN_PATH, "r") as f:
     STABLE_PATTERNS = json.load(f)
 
 NETWORK = Marabou.read_onnx(PATH)
-
+PYTORCH_NETWORK = ConvertModel(onnx.load(PATH))
+print("Checking loaded network:")
+print("true label:", true_label)
+true_output = PYTORCH_NETWORK(input.resize(1, 28, 28))
+print("true_output", true_output)
 START_PATTERN = Pattern()
 # START_PATTERN.from_check_list(STABLE_PATTERNS[str(true_label)]["stable_idx"],
 #                               STABLE_PATTERNS[str(true_label)]["val"])
 
+def pgd_attack(input, true_label, target, eps):
+    pertubation = attack_pgd(PYTORCH_NETWORK, input.resize(1, 1, 28, 28), 
+                            torch.tensor([true_label], dtype= torch.int64) , 
+                            multi_targeted=False, 
+                            target = torch.tensor([target], dtype = torch.int64),
+                            epsilon=eps, alpha=0.075, attack_iters=100, num_restarts=5, upper_limit=1, lower_limit=0, use_adam=True)
 
+    attack_image = input.resize(1, 1, 28, 28)+pertubation
+    attack_output = PYTORCH_NETWORK(attack_image)
+    # print(attack_output, torch.argmax(attack_output))
+    if torch.argmax(attack_output).item() == target:
+        return attack_image
+    
+    return None
+    
 def add_relu_constraints(network: Marabou.MarabouNetwork,
                          pattern: Pattern) -> None:
     """
@@ -122,39 +143,73 @@ def check_pattern(network: Marabou.MarabouNetwork, prop_name: str,
 
 
 
-def findCEX(x: List[float], NAP: Pattern, target_epsilon: float)->Union[List[float], None]:
-    for adv_label in range(1):
-        if adv_label == true_label: continue
-        network = Marabou.read_onnx(PATH) 
-        print(network.numVars)
-        # check if the benchmarks are really violated
-        for i in range(len(x)):
-            network.setLowerBound(i, max(0, x[i] - target_epsilon))
-            network.setUpperBound(i, min(1, x[i] + target_epsilon))
-        now = datetime.datetime.now()
-        try:
-            exit_code, running_time, cex = check_pattern(network, prop_name="", pattern = START_PATTERN,
-                                                label=true_label, other_label=adv_label, 
-                                                add_output_constraints=True)
-        except Exception as e:
-            print(e)
-            exit_code = "error"
-            cex = None
-        after_solve = datetime.datetime.now()
-        my_time = after_solve - now
-        print(exit_code)
-        if exit_code=="sat":
-            print("found cex!")
-            return cex
-            break
-        elif exit_code=="unsat":
-            print("no cex!")
-        else:
-            print("error!")
-        print(exit_code, running_time, my_time)
+def findCEX(x: List[float], NAP: Pattern, target_epsilon: float)->Union[List[List[float]]]:
+    n_cex = 100
+    found_cex:List[List[float]] = []
+    n = Marabou.read_onnx(PATH)
+    for i in range(n_cex):
+        cex = pgd_attack(torch.Tensor(x), true_label=true_label, target=0, eps=target_epsilon)
+        if cex is not None:
+            cex = cex.flatten().numpy().tolist()
+            cex_pattern = get_pattern(n, cex)
+            if cex_pattern <= NAP:
+                print("*", sep="")
+                found_cex.append(cex)
+            else:
+                print("-", sep="")
+    print("found {} cex using pgd".format(len(found_cex)))
 
-    return None
+    if len(found_cex)>0:
+        return found_cex
+    else: #pgd doesnt find anything. maybe we are robust?
+        for adv_label in range(1):
+            if adv_label == true_label: continue
+            network = Marabou.read_onnx(PATH) 
+            print(network.numVars)
+            # check if the benchmarks are really violated
+            for i in range(len(x)):
+                network.setLowerBound(i, max(0, x[i] - target_epsilon))
+                network.setUpperBound(i, min(1, x[i] + target_epsilon))
+            now = datetime.datetime.now()
+            try:
+                exit_code, running_time, cex = check_pattern(network, prop_name="", pattern = START_PATTERN,
+                                                    label=true_label, other_label=adv_label, 
+                                                    add_output_constraints=True)
+            except Exception as e:
+                print(e)
+                exit_code = "error"
+                cex = None
+            after_solve = datetime.datetime.now()
+            my_time = after_solve - now
+            print(exit_code)
+            if exit_code=="sat":
+                print("found cex!")
+                return [cex]
+                break
+            elif exit_code=="unsat":
+                print("no cex!")
+            else:
+                print("error!")
+            print(exit_code, running_time, my_time)
 
+        return []
+
+
+def find_core_NAP(NAPs: List[Pattern])->Pattern:
+    """
+    given a list of NAP, build the one using the intersection of all
+    """
+    result = Pattern()
+    all_A: List[Set[int]] = [set(p.activated) for p in NAPs]
+    print("all_A", all_A)
+    all_D: List[Set[int]] = [set(p.deactivated) for p in NAPs]
+    new_A: Set[int] = set.intersection(*all_A)
+    new_D: Set[int] = set.intersection(*all_D)
+
+    result.activated = new_A
+    result.deactivated = new_D
+
+    return result
 
 def find_NAP(input: List[float], start_pattern: Pattern, target_epsilon: float) -> Pattern:
     NAP_bar = get_pattern(NETWORK, input)
@@ -164,12 +219,16 @@ def find_NAP(input: List[float], start_pattern: Pattern, target_epsilon: float) 
     NAP_star = START_PATTERN
     while True:
         cex = findCEX(input, NAP_star, target_epsilon)
-        print("cex", cex)
         if cex is None:
             return NAP_star
         else:
-            cex_pattern = get_pattern(NETWORK, cex)
-            NAP_star.strengthen(NAP_bar, cex_pattern)
+            cex_patterns: List[Pattern] = []
+            for c in cex:
+                cex_patterns.append(get_pattern(NETWORK, c))
+
+            core_pattern = find_core_NAP(cex_patterns)
+            print("core pattern", core_pattern)
+            NAP_star.strengthen(NAP_bar, core_pattern)
         
 
 
@@ -177,6 +236,6 @@ def find_NAP(input: List[float], start_pattern: Pattern, target_epsilon: float) 
 
 
 def main():
-    NAP_star = find_NAP(TARGET_INPUT, START_PATTERN, 0.03)
+    NAP_star = find_NAP(TARGET_INPUT, START_PATTERN, 0.15)
     print(NAP_star)
 main()

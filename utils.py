@@ -24,6 +24,9 @@ class Pattern:
         self.deactivated.sort()
         self.n_fixed_relus = len(self.activated) + len(self.deactivated)
 
+    def __le__(self, other: Pattern)->bool:
+        return set(other.activated).issubset(set(self.activated)) and set(other.deactivated).issubset(set(self.deactivated))
+
     def from_check_list(self, relu_check_list: List[int], relu_val: List[int]):
         assert(len(relu_check_list) == len(relu_val))
         for i in range(len(relu_check_list)):
