@@ -10,18 +10,15 @@ import datetime
 from onnx2pytorch import ConvertModel
 import onnx
 import torch
+import tempfile
+import subprocess
+import datetime
 PATH = 'vnncomp2021/benchmarks/mnistfc/mnist-net_256x4.onnx'
 MAX_TIME = 1200  # in seconds
 np.random.seed(42)
-M_OPTIONS: MarabouCore.Options = Marabou.createOptions(verbosity=0,
-                                                       initialSplits=4,
-                                                       timeoutInSeconds=MAX_TIME,
-                                                       snc=True,
-                                                       numWorkers=8,
-                                                       )
+MARABOU = '/home/nle/opt/Marabou/build/bin/Marabou'
 
-
-BENCHMARK_PATH = 'datasets/MNIST/prop_7_0.05.vnnlib'
+BENCHMARK_PATH = 'datasets/MNIST/prop_14_0.05.vnnlib'
 input, eps, true_label, adv_label = load_vnnlib(BENCHMARK_PATH)
 print("true label", true_label)
 print("eps", eps)
@@ -113,28 +110,51 @@ def check_pattern(network: Marabou.MarabouNetwork, prop_name: str,
 
 
     try:
-        print("start solving")
-        exit_code: str
-        vals: Dict[int, float]
-        exit_code, vals, stats = network.solve( filename="{}_{}_vs_{}".format(prop_name, label, other_label),
-                                                options=M_OPTIONS, 
-                                                )
-        running_time: int = stats.getTotalTimeInMicro()
+        print("save query to a file")
+        tf = tempfile.NamedTemporaryFile(delete=False)
+        network.saveQuery(tf.name)
+
+        print("solve saved query using Marabou binary")
+
+        cmd = [MARABOU, 
+               "--input-query={}".format(tf.name),
+               "--blas-threads={}".format(4),
+               "--num-workers={}".format(8), 
+               "--timeout={}".format(MAX_TIME),
+               "--snc",
+               "--export-assignment", 
+            #    "--prove-unsat"
+               ]
+        start_time = datetime.datetime.now()
+        p = subprocess.run(cmd, stdout=subprocess.PIPE)
+        finish_time = datetime.datetime.now()
+        running_time = (finish_time - start_time).seconds
+        print(p.returncode)
+        stdout: List[str] = p.stdout.decode('utf-8').split("\n")
+        print("stdout snippet:")
+        print(stdout[-5:])
+        exit_code:str = stdout[-2]
+
+        # exit_code: str
+        # vals: Dict[int, float]
+        # exit_code, vals, stats = network.solve( filename="{}_{}_vs_{}".format(prop_name, label, other_label),
+        #                                         options=M_OPTIONS, 
+        #                                         )
+        # running_time: int = stats.getTotalTimeInMicro()
         print(exit_code)
         if exit_code=="sat":
-            print("double check output")
             print("Running time:{}".format(running_time))
 
             cex: List[float] = [0]*784
-            for idx in range(len(cex)):
-                cex[idx] = vals[idx]
+        #     for idx in range(len(cex)):
+        #         cex[idx] = vals[idx]
 
-            print(vals)
+        #     print(vals)
 
             return exit_code, running_time, cex
     except Exception as e:
         print(e)
-        if exit_code not in ["sat", "unsat"]:
+        if exit_code not in ["SAT", "UNSAT"]:
             print("THE QUERY CANNOT BE SOLVED")
         return exit_code, -1, None
 
@@ -143,25 +163,32 @@ def check_pattern(network: Marabou.MarabouNetwork, prop_name: str,
 
 
 
-def findCEX(x: List[float], NAP: Pattern, target_epsilon: float)->Union[List[List[float]]]:
-    n_cex = 100
+def findCEX(x: List[float], NAP: Pattern, target_epsilon: float, use_attack: bool = True)->Union[List[List[float]]]:
+    """
+    find some CEXs that follows a NAP but is classified differently
+    if use_attack is true, then first we will use an adv. method to find adv. example and check if they follow the NAP
+    """
     found_cex:List[List[float]] = []
-    n = Marabou.read_onnx(PATH)
-    for i in range(n_cex):
-        cex = pgd_attack(torch.Tensor(x), true_label=true_label, target=0, eps=target_epsilon)
-        if cex is not None:
-            cex = cex.flatten().numpy().tolist()
-            cex_pattern = get_pattern(n, cex)
-            if cex_pattern <= NAP:
-                print("*", sep="")
-                found_cex.append(cex)
-            else:
-                print("-", sep="")
-    print("found {} cex using pgd".format(len(found_cex)))
+    if use_attack:
+        print("Running adv. attack to find cexs...")
+        n_cex = 100
+        n = Marabou.read_onnx(PATH)
+        for i in range(n_cex):
+            cex = pgd_attack(torch.Tensor(x), true_label=true_label, target=0, eps=target_epsilon)
+            if cex is not None:
+                cex = cex.flatten().numpy().tolist()
+                cex_pattern = get_pattern(n, cex)
+                if cex_pattern <= NAP:
+                    print("*", sep="")
+                    found_cex.append(cex)
+                else:
+                    print("-", sep="")
+        print("found {} cex using pgd".format(len(found_cex)))
 
     if len(found_cex)>0:
         return found_cex
     else: #pgd doesnt find anything. maybe we are robust?
+        print("Running Marabou to find cexs...")
         for adv_label in range(1):
             if adv_label == true_label: continue
             network = Marabou.read_onnx(PATH) 
@@ -236,6 +263,13 @@ def find_NAP(input: List[float], start_pattern: Pattern, target_epsilon: float) 
 
 
 def main():
-    NAP_star = find_NAP(TARGET_INPUT, START_PATTERN, 0.15)
+    EPS = 0.05
+    #check that the target input is not robust at the desired epsilon
+    print("checking to see if the input is not robust at the desired epsilon")
+    cs = findCEX(TARGET_INPUT, START_PATTERN, EPS, use_attack=False)
+    if len(cs)==0:
+        print("input is already robust at epsilon")
+        return
+    NAP_star = find_NAP(TARGET_INPUT, START_PATTERN, EPS)
     print(NAP_star)
 main()
