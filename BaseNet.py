@@ -6,8 +6,10 @@ import logging
 import copy
 import numpy as np
 from typing import Any, Callable, List, Dict, Tuple
-from maraboupy import Marabou, MarabouCore
+from maraboupy import Marabou, MarabouCore  # type: ignore
 from maraboupy.MarabouNetwork import MarabouNetwork
+from auto_LiRPA import BoundedModule, BoundedTensor
+from auto_LiRPA.perturbations import PerturbationLpNorm
 
 import tempfile
 
@@ -50,25 +52,40 @@ def get_activation(name: str, tensor_logger: Dict[str, Any],
             logging.debug(tensor_logger[name].shape)
         return hook
 
-class BaseNet(nn.Module):
-    def __init__(self):
+class BaseNet():
+    def __init__(self, pytorch_net: nn.Module):
         super(BaseNet, self).__init__()
         self.tensor_log: Dict[str, Any] = {}
         self.gradient_log = {}
         self.hooks: List[Callable[..., None]] = []
         self.bw_hooks = []
         self.marabou_net: MarabouNetwork
-        self.pytorch_net: nn.Module
-        self.fw_ipq: MarabouCore.InputQuery 
+        self.pytorch_net: nn.Module = pytorch_net
+        self.fw_ipq: MarabouCore.InputQuery
+
+    def forward(self, x: torch.Tensor)->torch.Tensor:
+        return self.pytorch_net.forward(x)
+
     def build_marabou_net(self, dummy_input: torch.Tensor)->MarabouNetwork:
         """
             convert the network to MarabouNetwork
         """
-        self.eval()
+        self.pytorch_net.eval()
         tempf = tempfile.NamedTemporaryFile()
-        torch.onnx.export(self, dummy_input, tempf.name, verbose=False)
+        torch.onnx.export(self.pytorch_net, dummy_input, tempf.name, verbose=False)
         self.marabou_net = Marabou.read_onnx_plus(tempf.name)
         return self.marabou_net
+
+    def compute_jacobian_bounds(self, input: torch.autograd.Variable, eps: float):
+        lirpa_model = BoundedModule(self.pytorch_net, input)
+        lirpa_model.augment_gradient_graph(input)
+
+        x = BoundedTensor(input, PerturbationLpNorm(norm=np.inf, eps = eps))
+        lower, upper, imm_bounds = lirpa_model.compute_jacobian_bounds(x, return_immediate_bounds=True)
+        print("lower", lower)
+        print("upper", upper)
+        print("imm bounds", imm_bounds)
+
 
     def build_marabou_ipq(self)->MarabouCore.InputQuery:
         """

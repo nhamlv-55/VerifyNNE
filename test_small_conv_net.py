@@ -27,7 +27,7 @@ W3 = [[.301, .302],
       [.311, .312]]
 
 
-class ToyConvNet(BaseNet):
+class ToyConvNet(torch.nn.Module):
     def __init__(self):
         super().__init__()
         self.conv1 = torch.nn.Conv2d(
@@ -45,7 +45,7 @@ class ToyConvNet(BaseNet):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv1(x)
         x = self.relu(x)
-        x = x.reshape(8)
+        x = x.reshape(-1, 8)
         x = self.ln1(x)
 
         return x
@@ -89,7 +89,7 @@ def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input
                 ipq.setUpperBound(v, input[0][0][rid][vid].item())
 
     # set grad
-    for vid, v in enumerate(marabou_net.outputVars[0]):
+    for vid, v in enumerate(marabou_net.outputVars[0][0]):
         grad_v: int = v + marabou_net.numVars
         if vid == target:
             ipq.setLowerBound(grad_v, 1)
@@ -102,7 +102,7 @@ def build_saliency_mask_query(network: BaseNet, dummy_input: torch.Tensor, input
 
 
 def run_toy():
-    toy = ToyConvNet()
+    toy = BaseNet(ToyConvNet())
     input = torch.autograd.Variable(torch.Tensor(
         [[[[0.11, 0.12, 0.13],
            [0.21, 0.22, 0.23],
@@ -110,20 +110,21 @@ def run_toy():
         ]]]), requires_grad=True)
     print("calculate using pytorch")
     print(input.shape)
-    z1 = toy.conv1(input)
+    z1 = toy.pytorch_net.conv1(input)
     z1.retain_grad()
-    h1 = toy.relu(z1)
+    h1 = toy.pytorch_net.relu(z1)
     h1 = h1.flatten()
     h1.retain_grad()
     print("h1 shape", h1.shape)
-    z2 = toy.ln1(h1)
+    z2 = toy.pytorch_net.ln1(h1)
     z2.retain_grad()
     out = z2
     out.retain_grad()
     # out = h1
     # out = z2
-    print("*", toy(input), out)
-    assert torch.equal(toy(input), out), "networks are not the same"
+    print("*", toy.forward(input).squeeze(), out.squeeze())
+    assert torch.allclose(toy.forward(input).squeeze(), 
+                          out.squeeze()), "networks are not the same"
 
     loss = out[0]
     loss.backward(retain_graph=True)
@@ -137,6 +138,10 @@ def run_toy():
         _write(h1.grad, f)
         _write(z2, f)
         _write(z2.grad, f)
+
+    toy.compute_jacobian_bounds(input, 0)
+
+
     ipq = build_saliency_mask_query(
         toy, dummy_input=torch.randn(1, 1, 3, 3), input=input, target=0)
     MarabouCore.saveQuery(ipq, "finalQuery_smallConv")
