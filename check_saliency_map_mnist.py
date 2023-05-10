@@ -8,7 +8,7 @@ import torch
 from onnx2pytorch import ConvertModel
 import onnx
 import numpy as np
-from torchviz import make_dot
+import numpy.typing as npt
 from utils import set_default_bound, _write, load_vnnlib
 import json
 import pickle as pkl
@@ -17,7 +17,7 @@ torch.set_default_tensor_type(torch.DoubleTensor)
 
 
 def build_saliency_mask_query(network: BaseNet, 
-                              input: Optional[np.ndarray], 
+                              input: npt.ArrayLike,
                               adv_label: int,
                               true_label:int, 
                               input_eps: float,
@@ -45,34 +45,42 @@ def build_saliency_mask_query(network: BaseNet,
     """
     Setup full network (forward + backward)
     """
-    set_default_bound(ipq, range(marabou_net.numVars), -2, 2)
-    set_default_bound(ipq, range(marabou_net.numVars,
-                      marabou_net.numVars*2), -2, 2)
+    # set_default_bound(ipq, range(marabou_net.numVars), -2, 2)
+    # set_default_bound(ipq, range(marabou_net.numVars,
+                    #   marabou_net.numVars*2), -2, 2)
+
+    #compute the true saliency map for input
+    _tmp_inp = torch.autograd.Variable(torch.Tensor(input), requires_grad = True)
+    _out = network.pytorch_net(_tmp_inp)
+    _loss = _out[0][true_label]
+    _loss.backward()
+
+    true_grad = _tmp_inp.grad.flatten().detach().numpy().tolist()
+    print("True grad computed using Pytorch:", true_grad)
 
 
-    input_vars = np.array(marabou_net.inputVars).flatten().tolist()
+    input_vars: List[int] = np.array(marabou_net.inputVars).flatten().tolist()
     print(input_vars)
-    output_vars = np.array(marabou_net.outputVars).flatten().tolist()
+    output_vars: List[int] = np.array(marabou_net.outputVars).flatten().tolist()
     print(output_vars)
+
+    input: List[float] = input.flatten().tolist()
+
     for v in input_vars:
-        ipq.setLowerBound(v, max(0, network.fused_bounds[v][0]-input_eps))
-        ipq.setUpperBound(v, min(1, network.fused_bounds[v][1]+input_eps))
-
-
-
-
-
+        ipq.setLowerBound(v, max(0, input[v] - input_eps))
+        ipq.setUpperBound(v, min(1, input[v] + input_eps))
 
     # set other pre computed bounds:
     for v in network.fused_bounds:
-        if v in input_vars: continue
-        if v - marabou_net.numVars in output_vars: continue
+        if v in input_vars: continue # do not set bound of input
+        if v - marabou_net.numVars in output_vars: continue # do not set bound of grad of output
+        if v - marabou_net.numVars in input_vars: continue # do not set bound of grad of input node
         lower, upper = network.fused_bounds[v]
         print(f"setting bound for {v} : [{lower}, {upper}]")
         ipq.setLowerBound(v, lower)
         ipq.setUpperBound(v, upper)
 
-    # set grad
+    # set grad of the output layer
     for vid, v in enumerate(output_vars):
         grad_v: int = v + marabou_net.numVars
         print(f"setting bound for the grad node {grad_v} of the output layer")
@@ -84,6 +92,12 @@ def build_saliency_mask_query(network: BaseNet,
             ipq.setLowerBound(grad_v, 0)
             ipq.setUpperBound(grad_v, 0)
 
+    # set constraints for the grad of the input layer:
+    print("bounding the saliency map...")
+    for v in input_vars:
+        grad_v = v + marabou_net.numVars
+        ipq.setLowerBound(grad_v, true_grad[v] - grad_eps)
+        ipq.setUpperBound(grad_v, true_grad[v] + grad_eps)
     # set output constraints:
     # can logits for target > logits for true_label?
 
@@ -180,7 +194,7 @@ def check():
         ipq = build_saliency_mask_query(
             toy, input=np_input, adv_label=adv_label, true_label=true_label,
             input_eps=0.5,
-            grad_eps=0,
+            grad_eps=0.1,
             sanity_check=False)
         MarabouCore.saveQuery(ipq, "finalQuery_smallConv")
 
