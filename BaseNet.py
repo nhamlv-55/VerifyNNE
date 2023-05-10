@@ -80,7 +80,7 @@ class BaseNet():
         self.marabou_net = Marabou.read_onnx_plus(tempf.name)
         return self.marabou_net
 
-    def fusion(self, layer_map: Dict[str, str], label:int):
+    def fusion(self, layer_map: Dict[str, List[int]], label:int):
         """
         match the bounds computer by auto_lirpa with the corresponding 
         node in the marabou network
@@ -90,19 +90,20 @@ class BaseNet():
         """
         auto_lirpa_node: str
         for auto_lirpa_node in layer_map:
-            assert layer_map[auto_lirpa_node] in self.marabou_net.varMap, "the node is not in the marabou net. The layer map is incorrect"
-            al_node_shape =  self.immediate_bounds[label][auto_lirpa_node][0].squeeze().shape
-            m_node_shape = self.marabou_net.varMap[layer_map[auto_lirpa_node]].squeeze().shape
-            assert al_node_shape == m_node_shape, "{} ~= {}".format(al_node_shape, m_node_shape)
-            marabou_node_flatten = self.marabou_net.varMap[layer_map[auto_lirpa_node]].flatten()
-            lower_flatten = self.immediate_bounds[label][auto_lirpa_node][0].flatten()
-            upper_flatten = self.immediate_bounds[label][auto_lirpa_node][1].flatten()
-            print("+++++++++++++++++", upper_flatten - lower_flatten) 
-            assert len(marabou_node_flatten) == len(lower_flatten)
-
-            for i in range(len(marabou_node_flatten)):
-                self.fused_bounds[marabou_node_flatten[i]] = (lower_flatten[i].item(), upper_flatten[i].item())
-
+            if auto_lirpa_node in self.forward_bounds:
+                print(f"fusing bounds for forward node {auto_lirpa_node}")
+                print(self.forward_bounds[auto_lirpa_node])
+                assert len(layer_map[auto_lirpa_node]) == self.forward_bounds[auto_lirpa_node][0].shape[-1]
+                for idx, var in enumerate(layer_map[auto_lirpa_node]):
+                    self.fused_bounds[var] = (self.forward_bounds[auto_lirpa_node][0][idx].item(),
+                                              self.forward_bounds[auto_lirpa_node][1][idx].item())
+            elif auto_lirpa_node in self.grad_bounds:
+                print(f"fusing bounds for grad node {auto_lirpa_node}")
+                print(self.grad_bounds[auto_lirpa_node])
+                assert len(layer_map[auto_lirpa_node]) == self.grad_bounds[auto_lirpa_node][0].shape[-1]
+                for idx, var in enumerate(layer_map[auto_lirpa_node]):
+                    self.fused_bounds[var] = (self.grad_bounds[auto_lirpa_node][0][idx].item(),
+                                              self.grad_bounds[auto_lirpa_node][1][idx].item())
         print("---------------------------")         
         return self.fused_bounds
 
@@ -138,7 +139,7 @@ class BaseNet():
         """
         self.fw_ipq = MarabouCore.InputQuery(self.marabou_net.getForwardQuery())
         self.marabou_net.buildBackwardConstraints()
-        # ipq:MarabouCore.InputQuery = self.marabou_net.addBackwardQuery()
+        ipq:MarabouCore.InputQuery = self.marabou_net.addBackwardQuery()
         return ipq
 
 
