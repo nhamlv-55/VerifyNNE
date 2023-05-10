@@ -14,7 +14,7 @@ import json
 import pickle as pkl
 torch.set_default_tensor_type(torch.DoubleTensor)
 
-
+ZERO = 0.0000001
 
 def build_saliency_mask_query(network: BaseNet, 
                               input: npt.ArrayLike,
@@ -96,11 +96,19 @@ def build_saliency_mask_query(network: BaseNet,
     print("bounding the saliency map...")
     for v in input_vars:
         grad_v = v + marabou_net.numVars
-        ipq.setLowerBound(grad_v, true_grad[v] - grad_eps)
-        ipq.setUpperBound(grad_v, true_grad[v] + grad_eps)
+        lower = true_grad[v] - grad_eps
+        upper = true_grad[v] + grad_eps
+        print(f"setting node {grad_v} to bound ({lower}, {upper})")
+        ipq.setLowerBound(grad_v, lower)
+        ipq.setUpperBound(grad_v, upper)
     # set output constraints:
     # can logits for target > logits for true_label?
+    constraint = MarabouUtils.Equation(MarabouCore.Equation.GE)
+    constraint.addAddend(1, adv_label + output_vars[0])
+    constraint.addAddend(-1, true_label + output_vars[0])
+    constraint.setScalar(ZERO)
 
+    ipq.addEquation(constraint.toCoreEquation()) 
 
     return ipq
 
@@ -124,7 +132,7 @@ def prepare_benchmarks(benchmark: int)-> Tuple[BaseNet, torch.Tensor,
         toy: BaseNet = BaseNet(banditNet)
         toy.pytorch_net.to(dtype=torch.double)
         input = torch.Tensor([1, 1, 0, 1, 1])
-        eps = 0.5
+        eps = 1
         true_label = 1
         adv_labels = [0]
         precomputed_bounds = None
@@ -179,7 +187,7 @@ def check():
 
     if precomputed_bounds is None:
         print("recomputing bounds...")
-        toy.compute_jacobian_bounds(input, 0, true_label)
+        toy.compute_jacobian_bounds(input, eps, true_label)
 
         with open("pre_computed_bounds.pkl", "wb") as f:
             pkl.dump({"forward_bounds": toy.forward_bounds,
@@ -189,11 +197,11 @@ def check():
         with open(precomputed_bounds, "rb") as f:
             toy.load_jacobian_bounds(pkl.load(f))
 
-    toy.fusion(layer_map, 0)
+    toy.fusion(layer_map, true_label)
     for adv_label in adv_labels: 
         ipq = build_saliency_mask_query(
             toy, input=np_input, adv_label=adv_label, true_label=true_label,
-            input_eps=0.5,
+            input_eps=eps,
             grad_eps=0.1,
             sanity_check=False)
         MarabouCore.saveQuery(ipq, "finalQuery_smallConv")
