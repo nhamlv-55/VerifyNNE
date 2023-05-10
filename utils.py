@@ -122,7 +122,7 @@ def _write(o: Any, f: TextIOWrapper):
     if type(o) == torch.Tensor:
         f.write(np.array2string(o.detach().numpy())+"\n")
     else:
-        f.write(o.str()+"\n")
+        f.write(o.__str__()+"\n")
 
 
 class CommaString(object):
