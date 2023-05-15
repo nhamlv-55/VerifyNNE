@@ -1,0 +1,2017 @@
+InputQuery: finalQuery_smallConv
+
+Engine::processInputQuery: Input query (before preprocessing): 1819 equations, 3636 variables
+Engine::processInputQuery: Input query (after preprocessing): 2899 equations, 4529 variables
+
+Input bounds:
+	x0: [  0.0000,   0.0500] 
+	x1: [  0.0000,   0.0500] 
+	x2: [  0.0000,   0.0500] 
+	x3: [  0.0000,   0.0500] 
+	x4: [  0.0000,   0.0500] 
+	x5: [  0.0000,   0.0500] 
+	x6: [  0.0000,   0.0500] 
+	x7: [  0.0000,   0.0500] 
+	x8: [  0.0000,   0.0500] 
+	x9: [  0.0000,   0.0500] 
+	x10: [  0.0000,   0.0500] 
+	x11: [  0.0000,   0.0500] 
+	x12: [  0.0000,   0.0500] 
+	x13: [  0.0000,   0.0500] 
+	x14: [  0.0000,   0.0500] 
+	x15: [  0.0000,   0.0500] 
+	x16: [  0.0000,   0.0500] 
+	x17: [  0.0000,   0.0500] 
+	x18: [  0.0000,   0.0500] 
+	x19: [  0.0000,   0.0500] 
+	x20: [  0.0000,   0.0500] 
+	x21: [  0.0000,   0.0500] 
+	x22: [  0.0000,   0.0500] 
+	x23: [  0.0000,   0.0500] 
+	x24: [  0.0000,   0.0500] 
+	x25: [  0.0000,   0.0500] 
+	x26: [  0.0000,   0.0500] 
+	x27: [  0.0000,   0.0500] 
+	x28: [  0.0000,   0.0500] 
+	x29: [  0.0000,   0.0500] 
+	x30: [  0.0000,   0.0500] 
+	x31: [  0.0000,   0.0500] 
+	x32: [  0.0000,   0.0500] 
+	x33: [  0.0000,   0.0500] 
+	x34: [  0.0000,   0.0500] 
+	x35: [  0.0000,   0.0500] 
+	x36: [  0.0000,   0.0500] 
+	x37: [  0.0000,   0.0500] 
+	x38: [  0.0000,   0.0500] 
+	x39: [  0.0000,   0.0500] 
+	x40: [  0.0000,   0.0500] 
+	x41: [  0.0000,   0.0500] 
+	x42: [  0.0000,   0.0500] 
+	x43: [  0.0000,   0.0500] 
+	x44: [  0.0000,   0.0500] 
+	x45: [  0.0000,   0.0500] 
+	x46: [  0.0000,   0.0500] 
+	x47: [  0.0000,   0.0500] 
+	x48: [  0.0000,   0.0500] 
+	x49: [  0.0000,   0.0500] 
+	x50: [  0.0000,   0.0500] 
+	x51: [  0.0000,   0.0500] 
+	x52: [  0.0000,   0.0500] 
+	x53: [  0.0000,   0.0500] 
+	x54: [  0.0000,   0.0500] 
+	x55: [  0.0000,   0.0500] 
+	x56: [  0.0000,   0.0500] 
+	x57: [  0.0000,   0.0500] 
+	x58: [  0.0000,   0.0500] 
+	x59: [  0.0000,   0.0500] 
+	x60: [  0.0000,   0.0500] 
+	x61: [  0.0000,   0.0500] 
+	x62: [  0.0000,   0.0500] 
+	x63: [  0.0000,   0.0500] 
+	x64: [  0.0000,   0.0500] 
+	x65: [  0.0000,   0.0500] 
+	x66: [  0.0000,   0.0500] 
+	x67: [  0.0000,   0.0500] 
+	x68: [  0.0000,   0.0500] 
+	x69: [  0.0000,   0.0500] 
+	x70: [  0.0000,   0.0500] 
+	x71: [  0.0000,   0.0500] 
+	x72: [  0.0000,   0.0500] 
+	x73: [  0.0000,   0.0500] 
+	x74: [  0.0000,   0.0500] 
+	x75: [  0.0000,   0.0500] 
+	x76: [  0.0000,   0.0500] 
+	x77: [  0.0000,   0.0500] 
+	x78: [  0.0000,   0.0500] 
+	x79: [  0.0000,   0.0500] 
+	x80: [  0.0000,   0.0500] 
+	x81: [  0.0000,   0.0500] 
+	x82: [  0.0000,   0.0500] 
+	x83: [  0.0000,   0.0500] 
+	x84: [  0.0000,   0.0500] 
+	x85: [  0.0000,   0.0500] 
+	x86: [  0.0000,   0.0500] 
+	x87: [  0.0000,   0.0500] 
+	x88: [  0.0000,   0.0500] 
+	x89: [  0.0000,   0.0500] 
+	x90: [  0.0000,   0.0500] 
+	x91: [  0.0000,   0.0500] 
+	x92: [  0.0000,   0.0500] 
+	x93: [  0.0000,   0.0500] 
+	x94: [  0.0000,   0.0500] 
+	x95: [  0.0000,   0.0500] 
+	x96: [  0.0000,   0.0500] 
+	x97: [  0.0000,   0.0500] 
+	x98: [  0.0000,   0.0500] 
+	x99: [  0.0000,   0.0500] 
+	x100: [  0.0000,   0.0500] 
+	x101: [  0.0000,   0.0500] 
+	x102: [  0.0000,   0.0500] 
+	x103: [  0.0000,   0.0500] 
+	x104: [  0.0000,   0.0500] 
+	x105: [  0.0000,   0.0500] 
+	x106: [  0.0000,   0.0500] 
+	x107: [  0.0000,   0.0500] 
+	x108: [  0.0000,   0.0500] 
+	x109: [  0.0000,   0.0500] 
+	x110: [  0.0000,   0.0500] 
+	x111: [  0.0000,   0.0500] 
+	x112: [  0.0000,   0.0500] 
+	x113: [  0.0000,   0.0500] 
+	x114: [  0.0000,   0.0500] 
+	x115: [  0.0000,   0.0500] 
+	x116: [  0.0000,   0.0500] 
+	x117: [  0.0000,   0.0500] 
+	x118: [  0.0000,   0.0500] 
+	x119: [  0.0000,   0.0500] 
+	x120: [  0.0000,   0.0500] 
+	x121: [  0.0000,   0.0500] 
+	x122: [  0.0000,   0.0500] 
+	x123: [  0.0000,   0.0500] 
+	x124: [  0.0000,   0.0500] 
+	x125: [  0.0000,   0.0500] 
+	x126: [  0.0000,   0.0500] 
+	x127: [  0.0167,   0.1167] 
+	x128: [  0.4127,   0.5127] 
+	x129: [  0.9029,   1.0000] 
+	x130: [  0.8637,   0.9637] 
+	x131: [  0.0245,   0.1245] 
+	x132: [  0.0000,   0.0500] 
+	x133: [  0.0000,   0.0500] 
+	x134: [  0.0000,   0.0500] 
+	x135: [  0.0000,   0.0500] 
+	x136: [  0.0000,   0.0500] 
+	x137: [  0.0000,   0.0500] 
+	x138: [  0.0000,   0.0500] 
+	x139: [  0.0000,   0.0500] 
+	x140: [  0.0000,   0.0500] 
+	x141: [  0.0000,   0.0500] 
+	x142: [  0.0000,   0.0500] 
+	x143: [  0.0000,   0.0500] 
+	x144: [  0.0000,   0.0500] 
+	x145: [  0.0000,   0.0500] 
+	x146: [  0.0000,   0.0500] 
+	x147: [  0.0000,   0.0500] 
+	x148: [  0.0000,   0.0500] 
+	x149: [  0.0000,   0.0500] 
+	x150: [  0.0000,   0.0500] 
+	x151: [  0.0000,   0.0500] 
+	x152: [  0.0000,   0.0500] 
+	x153: [  0.0520,   0.1520] 
+	x154: [  0.4206,   0.5206] 
+	x155: [  0.8441,   0.9441] 
+	x156: [  0.9382,   1.0000] 
+	x157: [  0.9382,   1.0000] 
+	x158: [  0.9422,   1.0000] 
+	x159: [  0.8755,   0.9755] 
+	x160: [  0.5814,   0.6814] 
+	x161: [  0.1461,   0.2461] 
+	x162: [  0.0000,   0.0500] 
+	x163: [  0.0000,   0.0500] 
+	x164: [  0.0000,   0.0500] 
+	x165: [  0.0000,   0.0500] 
+	x166: [  0.0000,   0.0500] 
+	x167: [  0.0000,   0.0500] 
+	x168: [  0.0000,   0.0500] 
+	x169: [  0.0000,   0.0500] 
+	x170: [  0.0000,   0.0500] 
+	x171: [  0.0000,   0.0500] 
+	x172: [  0.0000,   0.0500] 
+	x173: [  0.0000,   0.0500] 
+	x174: [  0.0000,   0.0500] 
+	x175: [  0.0000,   0.0500] 
+	x176: [  0.0000,   0.0500] 
+	x177: [  0.0000,   0.0500] 
+	x178: [  0.0000,   0.0500] 
+	x179: [  0.0520,   0.1520] 
+	x180: [  0.2245,   0.3245] 
+	x181: [  0.8206,   0.9206] 
+	x182: [  0.9382,   1.0000] 
+	x183: [  0.9382,   1.0000] 
+	x184: [  0.9382,   1.0000] 
+	x185: [  0.9382,   1.0000] 
+	x186: [  0.9422,   1.0000] 
+	x187: [  0.9382,   1.0000] 
+	x188: [  0.9382,   1.0000] 
+	x189: [  0.6755,   0.7755] 
+	x190: [  0.0000,   0.0775] 
+	x191: [  0.0000,   0.0500] 
+	x192: [  0.0000,   0.0500] 
+	x193: [  0.0000,   0.0500] 
+	x194: [  0.0000,   0.0500] 
+	x195: [  0.0000,   0.0500] 
+	x196: [  0.0000,   0.0500] 
+	x197: [  0.0000,   0.0500] 
+	x198: [  0.0000,   0.0500] 
+	x199: [  0.0000,   0.0500] 
+	x200: [  0.0000,   0.0500] 
+	x201: [  0.0000,   0.0500] 
+	x202: [  0.0000,   0.0500] 
+	x203: [  0.0000,   0.0500] 
+	x204: [  0.0000,   0.0500] 
+	x205: [  0.2676,   0.3676] 
+	x206: [  0.7618,   0.8618] 
+	x207: [  0.8284,   0.9284] 
+	x208: [  0.9382,   1.0000] 
+	x209: [  0.9422,   1.0000] 
+	x210: [  0.9382,   1.0000] 
+	x211: [  0.9382,   1.0000] 
+	x212: [  0.9382,   1.0000] 
+	x213: [  0.7735,   0.8735] 
+	x214: [  0.6127,   0.7127] 
+	x215: [  0.9382,   1.0000] 
+	x216: [  0.9382,   1.0000] 
+	x217: [  0.9382,   1.0000] 
+	x218: [  0.2049,   0.3049] 
+	x219: [  0.0000,   0.0500] 
+	x220: [  0.0000,   0.0500] 
+	x221: [  0.0000,   0.0500] 
+	x222: [  0.0000,   0.0500] 
+	x223: [  0.0000,   0.0500] 
+	x224: [  0.0000,   0.0500] 
+	x225: [  0.0000,   0.0500] 
+	x226: [  0.0000,   0.0500] 
+	x227: [  0.0000,   0.0500] 
+	x228: [  0.0000,   0.0500] 
+	x229: [  0.0000,   0.0500] 
+	x230: [  0.0000,   0.0500] 
+	x231: [  0.0000,   0.0500] 
+	x232: [  0.6520,   0.7520] 
+	x233: [  0.9069,   1.0000] 
+	x234: [  0.9382,   1.0000] 
+	x235: [  0.9382,   1.0000] 
+	x236: [  0.9382,   1.0000] 
+	x237: [  0.9422,   1.0000] 
+	x238: [  0.8559,   0.9559] 
+	x239: [  0.3657,   0.4657] 
+	x240: [  0.0363,   0.1363] 
+	x241: [  0.0000,   0.0971] 
+	x242: [  0.2480,   0.3480] 
+	x243: [  0.9382,   1.0000] 
+	x244: [  0.9382,   1.0000] 
+	x245: [  0.9382,   1.0000] 
+	x246: [  0.0755,   0.1755] 
+	x247: [  0.0000,   0.0500] 
+	x248: [  0.0000,   0.0500] 
+	x249: [  0.0000,   0.0500] 
+	x250: [  0.0000,   0.0500] 
+	x251: [  0.0000,   0.0500] 
+	x252: [  0.0000,   0.0500] 
+	x253: [  0.0000,   0.0500] 
+	x254: [  0.0000,   0.0500] 
+	x255: [  0.0000,   0.0500] 
+	x256: [  0.0000,   0.0500] 
+	x257: [  0.0000,   0.0500] 
+	x258: [  0.0000,   0.0500] 
+	x259: [  0.0000,   0.0500] 
+	x260: [  0.9500,   1.0000] 
+	x261: [  0.9422,   1.0000] 
+	x262: [  0.9422,   1.0000] 
+	x263: [  0.9108,   1.0000] 
+	x264: [  0.4441,   0.5441] 
+	x265: [  0.1578,   0.2578] 
+	x266: [  0.0000,   0.0500] 
+	x267: [  0.0000,   0.0500] 
+	x268: [  0.0245,   0.1245] 
+	x269: [  0.6598,   0.7598] 
+	x270: [  0.9500,   1.0000] 
+	x271: [  0.9422,   1.0000] 
+	x272: [  0.9422,   1.0000] 
+	x273: [  0.5382,   0.6382] 
+	x274: [  0.0000,   0.0500] 
+	x275: [  0.0000,   0.0500] 
+	x276: [  0.0000,   0.0500] 
+	x277: [  0.0000,   0.0500] 
+	x278: [  0.0000,   0.0500] 
+	x279: [  0.0000,   0.0500] 
+	x280: [  0.0000,   0.0500] 
+	x281: [  0.0000,   0.0500] 
+	x282: [  0.0000,   0.0500] 
+	x283: [  0.0000,   0.0500] 
+	x284: [  0.0000,   0.0500] 
+	x285: [  0.0000,   0.0500] 
+	x286: [  0.0000,   0.0500] 
+	x287: [  0.0000,   0.0500] 
+	x288: [  0.7618,   0.8618] 
+	x289: [  0.7578,   0.8578] 
+	x290: [  0.4324,   0.5324] 
+	x291: [  0.1775,   0.2775] 
+	x292: [  0.0000,   0.0500] 
+	x293: [  0.0000,   0.0696] 
+	x294: [  0.1343,   0.2343] 
+	x295: [  0.4598,   0.5598] 
+	x296: [  0.8755,   0.9755] 
+	x297: [  0.9382,   1.0000] 
+	x298: [  0.9422,   1.0000] 
+	x299: [  0.9382,   1.0000] 
+	x300: [  0.6833,   0.7833] 
+	x301: [  0.0167,   0.1167] 
+	x302: [  0.0000,   0.0500] 
+	x303: [  0.0000,   0.0500] 
+	x304: [  0.0000,   0.0500] 
+	x305: [  0.0000,   0.0500] 
+	x306: [  0.0000,   0.0500] 
+	x307: [  0.0000,   0.0500] 
+	x308: [  0.0000,   0.0500] 
+	x309: [  0.0000,   0.0500] 
+	x310: [  0.0000,   0.0500] 
+	x311: [  0.0000,   0.0500] 
+	x312: [  0.0000,   0.0500] 
+	x313: [  0.0000,   0.0500] 
+	x314: [  0.0000,   0.0500] 
+	x315: [  0.0000,   0.0500] 
+	x316: [  0.0000,   0.0500] 
+	x317: [  0.0000,   0.0500] 
+	x318: [  0.0245,   0.1245] 
+	x319: [  0.2245,   0.3245] 
+	x320: [  0.4284,   0.5284] 
+	x321: [  0.6990,   0.7990] 
+	x322: [  0.9382,   1.0000] 
+	x323: [  0.9382,   1.0000] 
+	x324: [  0.9382,   1.0000] 
+	x325: [  0.9382,   1.0000] 
+	x326: [  0.9422,   1.0000] 
+	x327: [  0.4755,   0.5755] 
+	x328: [  0.0245,   0.1245] 
+	x329: [  0.0000,   0.0500] 
+	x330: [  0.0000,   0.0500] 
+	x331: [  0.0000,   0.0500] 
+	x332: [  0.0000,   0.0500] 
+	x333: [  0.0000,   0.0500] 
+	x334: [  0.0000,   0.0500] 
+	x335: [  0.0000,   0.0500] 
+	x336: [  0.0000,   0.0500] 
+	x337: [  0.0000,   0.0500] 
+	x338: [  0.0000,   0.0500] 
+	x339: [  0.0000,   0.0500] 
+	x340: [  0.0000,   0.0500] 
+	x341: [  0.0000,   0.0500] 
+	x342: [  0.0000,   0.0500] 
+	x343: [  0.0000,   0.0500] 
+	x344: [  0.0000,   0.0500] 
+	x345: [  0.2676,   0.3676] 
+	x346: [  0.8127,   0.9127] 
+	x347: [  0.9382,   1.0000] 
+	x348: [  0.9382,   1.0000] 
+	x349: [  0.9422,   1.0000] 
+	x350: [  0.9382,   1.0000] 
+	x351: [  0.9382,   1.0000] 
+	x352: [  0.9382,   1.0000] 
+	x353: [  0.9382,   1.0000] 
+	x354: [  0.9422,   1.0000] 
+	x355: [  0.7422,   0.8422] 
+	x356: [  0.0480,   0.1480] 
+	x357: [  0.0000,   0.0500] 
+	x358: [  0.0000,   0.0500] 
+	x359: [  0.0000,   0.0500] 
+	x360: [  0.0000,   0.0500] 
+	x361: [  0.0000,   0.0500] 
+	x362: [  0.0000,   0.0500] 
+	x363: [  0.0000,   0.0500] 
+	x364: [  0.0000,   0.0500] 
+	x365: [  0.0000,   0.0500] 
+	x366: [  0.0000,   0.0500] 
+	x367: [  0.0000,   0.0500] 
+	x368: [  0.0000,   0.0500] 
+	x369: [  0.0000,   0.0500] 
+	x370: [  0.0000,   0.0500] 
+	x371: [  0.0000,   0.0500] 
+	x372: [  0.0363,   0.1363] 
+	x373: [  0.9069,   1.0000] 
+	x374: [  0.9382,   1.0000] 
+	x375: [  0.9382,   1.0000] 
+	x376: [  0.9382,   1.0000] 
+	x377: [  0.9422,   1.0000] 
+	x378: [  0.9382,   1.0000] 
+	x379: [  0.9382,   1.0000] 
+	x380: [  0.9382,   1.0000] 
+	x381: [  0.9382,   1.0000] 
+	x382: [  0.9422,   1.0000] 
+	x383: [  0.9382,   1.0000] 
+	x384: [  0.7539,   0.8539] 
+	x385: [  0.0324,   0.1324] 
+	x386: [  0.0000,   0.0500] 
+	x387: [  0.0000,   0.0500] 
+	x388: [  0.0000,   0.0500] 
+	x389: [  0.0000,   0.0500] 
+	x390: [  0.0000,   0.0500] 
+	x391: [  0.0000,   0.0500] 
+	x392: [  0.0000,   0.0500] 
+	x393: [  0.0000,   0.0500] 
+	x394: [  0.0000,   0.0500] 
+	x395: [  0.0000,   0.0500] 
+	x396: [  0.0000,   0.0500] 
+	x397: [  0.0000,   0.0500] 
+	x398: [  0.0000,   0.0500] 
+	x399: [  0.0000,   0.0500] 
+	x400: [  0.0363,   0.1363] 
+	x401: [  0.8520,   0.9520] 
+	x402: [  0.8951,   0.9951] 
+	x403: [  0.8520,   0.9520] 
+	x404: [  0.4441,   0.5441] 
+	x405: [  0.4049,   0.5049] 
+	x406: [  0.4049,   0.5049] 
+	x407: [  0.4049,   0.5049] 
+	x408: [  0.4049,   0.5049] 
+	x409: [  0.4049,   0.5049] 
+	x410: [  0.9069,   1.0000] 
+	x411: [  0.9422,   1.0000] 
+	x412: [  0.9422,   1.0000] 
+	x413: [  0.3775,   0.4775] 
+	x414: [  0.0000,   0.0500] 
+	x415: [  0.0000,   0.0500] 
+	x416: [  0.0000,   0.0500] 
+	x417: [  0.0000,   0.0500] 
+	x418: [  0.0000,   0.0500] 
+	x419: [  0.0000,   0.0500] 
+	x420: [  0.0000,   0.0500] 
+	x421: [  0.0000,   0.0500] 
+	x422: [  0.0000,   0.0500] 
+	x423: [  0.0000,   0.0500] 
+	x424: [  0.0000,   0.0500] 
+	x425: [  0.0000,   0.0500] 
+	x426: [  0.0000,   0.0500] 
+	x427: [  0.0000,   0.0500] 
+	x428: [  0.0000,   0.0500] 
+	x429: [  0.0000,   0.0500] 
+	x430: [  0.1147,   0.2147] 
+	x431: [  0.0000,   0.0500] 
+	x432: [  0.0000,   0.0500] 
+	x433: [  0.0000,   0.0500] 
+	x434: [  0.0000,   0.0500] 
+	x435: [  0.0000,   0.0500] 
+	x436: [  0.0000,   0.0500] 
+	x437: [  0.0000,   0.0500] 
+	x438: [  0.4912,   0.5912] 
+	x439: [  0.9382,   1.0000] 
+	x440: [  0.9382,   1.0000] 
+	x441: [  0.5775,   0.6775] 
+	x442: [  0.0000,   0.0500] 
+	x443: [  0.0000,   0.0500] 
+	x444: [  0.0000,   0.0500] 
+	x445: [  0.0000,   0.0500] 
+	x446: [  0.0000,   0.0500] 
+	x447: [  0.0000,   0.0500] 
+	x448: [  0.0000,   0.0500] 
+	x449: [  0.0000,   0.0500] 
+	x450: [  0.0000,   0.0500] 
+	x451: [  0.0000,   0.0500] 
+	x452: [  0.0000,   0.0500] 
+	x453: [  0.0000,   0.0500] 
+	x454: [  0.0000,   0.0500] 
+	x455: [  0.0000,   0.0500] 
+	x456: [  0.0000,   0.0500] 
+	x457: [  0.0000,   0.0500] 
+	x458: [  0.0000,   0.0500] 
+	x459: [  0.0000,   0.0500] 
+	x460: [  0.0000,   0.0500] 
+	x461: [  0.0000,   0.0500] 
+	x462: [  0.0000,   0.0500] 
+	x463: [  0.0000,   0.0500] 
+	x464: [  0.0000,   0.0500] 
+	x465: [  0.2833,   0.3833] 
+	x466: [  0.8206,   0.9206] 
+	x467: [  0.9382,   1.0000] 
+	x468: [  0.9382,   1.0000] 
+	x469: [  0.2520,   0.3520] 
+	x470: [  0.0000,   0.0500] 
+	x471: [  0.0000,   0.0500] 
+	x472: [  0.0000,   0.0500] 
+	x473: [  0.0000,   0.0500] 
+	x474: [  0.0000,   0.0500] 
+	x475: [  0.0000,   0.0500] 
+	x476: [  0.0000,   0.0500] 
+	x477: [  0.0000,   0.0500] 
+	x478: [  0.0000,   0.0500] 
+	x479: [  0.0000,   0.0500] 
+	x480: [  0.0000,   0.0500] 
+	x481: [  0.0000,   0.0500] 
+	x482: [  0.0000,   0.0500] 
+	x483: [  0.0000,   0.0500] 
+	x484: [  0.0000,   0.0500] 
+	x485: [  0.0000,   0.0500] 
+	x486: [  0.0000,   0.0500] 
+	x487: [  0.0000,   0.0500] 
+	x488: [  0.0000,   0.0500] 
+	x489: [  0.0000,   0.0500] 
+	x490: [  0.0000,   0.0500] 
+	x491: [  0.0000,   0.0500] 
+	x492: [  0.0000,   0.0500] 
+	x493: [  0.7735,   0.8735] 
+	x494: [  0.9422,   1.0000] 
+	x495: [  0.9382,   1.0000] 
+	x496: [  0.8402,   0.9402] 
+	x497: [  0.0637,   0.1637] 
+	x498: [  0.0000,   0.0500] 
+	x499: [  0.0000,   0.0500] 
+	x500: [  0.0000,   0.0500] 
+	x501: [  0.0000,   0.0500] 
+	x502: [  0.0000,   0.0500] 
+	x503: [  0.0000,   0.0500] 
+	x504: [  0.0000,   0.0500] 
+	x505: [  0.0000,   0.0500] 
+	x506: [  0.0000,   0.0500] 
+	x507: [  0.0000,   0.0500] 
+	x508: [  0.0000,   0.0500] 
+	x509: [  0.0000,   0.0500] 
+	x510: [  0.0000,   0.0500] 
+	x511: [  0.0000,   0.0500] 
+	x512: [  0.0000,   0.0500] 
+	x513: [  0.0000,   0.0500] 
+	x514: [  0.0000,   0.0500] 
+	x515: [  0.0000,   0.0500] 
+	x516: [  0.0000,   0.0500] 
+	x517: [  0.0000,   0.0500] 
+	x518: [  0.0000,   0.0500] 
+	x519: [  0.0000,   0.0500] 
+	x520: [  0.6912,   0.7912] 
+	x521: [  0.9304,   1.0000] 
+	x522: [  0.9422,   1.0000] 
+	x523: [  0.9382,   1.0000] 
+	x524: [  0.2598,   0.3598] 
+	x525: [  0.0000,   0.0500] 
+	x526: [  0.0000,   0.0500] 
+	x527: [  0.0000,   0.0500] 
+	x528: [  0.0000,   0.0500] 
+	x529: [  0.0000,   0.0500] 
+	x530: [  0.0000,   0.0500] 
+	x531: [  0.0000,   0.0500] 
+	x532: [  0.0000,   0.0500] 
+	x533: [  0.0000,   0.0500] 
+	x534: [  0.0000,   0.0500] 
+	x535: [  0.0000,   0.0500] 
+	x536: [  0.0000,   0.0500] 
+	x537: [  0.0000,   0.0500] 
+	x538: [  0.0000,   0.0500] 
+	x539: [  0.0000,   0.0500] 
+	x540: [  0.0000,   0.0500] 
+	x541: [  0.0000,   0.0500] 
+	x542: [  0.0000,   0.0500] 
+	x543: [  0.0000,   0.0500] 
+	x544: [  0.0000,   0.0500] 
+	x545: [  0.0000,   0.0500] 
+	x546: [  0.0000,   0.0696] 
+	x547: [  0.4912,   0.5912] 
+	x548: [  0.9422,   1.0000] 
+	x549: [  0.9422,   1.0000] 
+	x550: [  0.9382,   1.0000] 
+	x551: [  0.4794,   0.5794] 
+	x552: [  0.0000,   0.0500] 
+	x553: [  0.0000,   0.0500] 
+	x554: [  0.0000,   0.0500] 
+	x555: [  0.0000,   0.0500] 
+	x556: [  0.0000,   0.0500] 
+	x557: [  0.0000,   0.0500] 
+	x558: [  0.0000,   0.0500] 
+	x559: [  0.0000,   0.0500] 
+	x560: [  0.0000,   0.0500] 
+	x561: [  0.0000,   0.0500] 
+	x562: [  0.0000,   0.0500] 
+	x563: [  0.0088,   0.1088] 
+	x564: [  0.5814,   0.6814] 
+	x565: [  0.4559,   0.5559] 
+	x566: [  0.0000,   0.0853] 
+	x567: [  0.0000,   0.0500] 
+	x568: [  0.0000,   0.0500] 
+	x569: [  0.0000,   0.0500] 
+	x570: [  0.0000,   0.0500] 
+	x571: [  0.0000,   0.0500] 
+	x572: [  0.0363,   0.1363] 
+	x573: [  0.3814,   0.4814] 
+	x574: [  0.6480,   0.7480] 
+	x575: [  0.9382,   1.0000] 
+	x576: [  0.9382,   1.0000] 
+	x577: [  0.9382,   1.0000] 
+	x578: [  0.6873,   0.7873] 
+	x579: [  0.0000,   0.0500] 
+	x580: [  0.0000,   0.0500] 
+	x581: [  0.0000,   0.0500] 
+	x582: [  0.0000,   0.0500] 
+	x583: [  0.0000,   0.0500] 
+	x584: [  0.0000,   0.0500] 
+	x585: [  0.0000,   0.0500] 
+	x586: [  0.0000,   0.0500] 
+	x587: [  0.0000,   0.0500] 
+	x588: [  0.0000,   0.0500] 
+	x589: [  0.0000,   0.0500] 
+	x590: [  0.0000,   0.0500] 
+	x591: [  0.4912,   0.5912] 
+	x592: [  0.9382,   1.0000] 
+	x593: [  0.9382,   1.0000] 
+	x594: [  0.7186,   0.8186] 
+	x595: [  0.6716,   0.7716] 
+	x596: [  0.4324,   0.5324] 
+	x597: [  0.3069,   0.4069] 
+	x598: [  0.6716,   0.7716] 
+	x599: [  0.6716,   0.7716] 
+	x600: [  0.7931,   0.8931] 
+	x601: [  0.9422,   1.0000] 
+	x602: [  0.9382,   1.0000] 
+	x603: [  0.9382,   1.0000] 
+	x604: [  0.8402,   0.9402] 
+	x605: [  0.4598,   0.5598] 
+	x606: [  0.0000,   0.0500] 
+	x607: [  0.0000,   0.0500] 
+	x608: [  0.0000,   0.0500] 
+	x609: [  0.0000,   0.0500] 
+	x610: [  0.0000,   0.0500] 
+	x611: [  0.0000,   0.0500] 
+	x612: [  0.0000,   0.0500] 
+	x613: [  0.0000,   0.0500] 
+	x614: [  0.0000,   0.0500] 
+	x615: [  0.0000,   0.0500] 
+	x616: [  0.0000,   0.0500] 
+	x617: [  0.0000,   0.0500] 
+	x618: [  0.0000,   0.0500] 
+	x619: [  0.9422,   1.0000] 
+	x620: [  0.9382,   1.0000] 
+	x621: [  0.9382,   1.0000] 
+	x622: [  0.9382,   1.0000] 
+	x623: [  0.9382,   1.0000] 
+	x624: [  0.9422,   1.0000] 
+	x625: [  0.9382,   1.0000] 
+	x626: [  0.9382,   1.0000] 
+	x627: [  0.9382,   1.0000] 
+	x628: [  0.9382,   1.0000] 
+	x629: [  0.9422,   1.0000] 
+	x630: [  0.9382,   1.0000] 
+	x631: [  0.6755,   0.7755] 
+	x632: [  0.1461,   0.2461] 
+	x633: [  0.0000,   0.0500] 
+	x634: [  0.0000,   0.0500] 
+	x635: [  0.0000,   0.0500] 
+	x636: [  0.0000,   0.0500] 
+	x637: [  0.0000,   0.0500] 
+	x638: [  0.0000,   0.0500] 
+	x639: [  0.0000,   0.0500] 
+	x640: [  0.0000,   0.0500] 
+	x641: [  0.0000,   0.0500] 
+	x642: [  0.0000,   0.0500] 
+	x643: [  0.0000,   0.0500] 
+	x644: [  0.0000,   0.0500] 
+	x645: [  0.0000,   0.0500] 
+	x646: [  0.0000,   0.0500] 
+	x647: [  0.3265,   0.4265] 
+	x648: [  0.9382,   1.0000] 
+	x649: [  0.9382,   1.0000] 
+	x650: [  0.9382,   1.0000] 
+	x651: [  0.9382,   1.0000] 
+	x652: [  0.9422,   1.0000] 
+	x653: [  0.9382,   1.0000] 
+	x654: [  0.9382,   1.0000] 
+	x655: [  0.9382,   1.0000] 
+	x656: [  0.5265,   0.6265] 
+	x657: [  0.4873,   0.5873] 
+	x658: [  0.2010,   0.3010] 
+	x659: [  0.0000,   0.0735] 
+	x660: [  0.0000,   0.0500] 
+	x661: [  0.0000,   0.0500] 
+	x662: [  0.0000,   0.0500] 
+	x663: [  0.0000,   0.0500] 
+	x664: [  0.0000,   0.0500] 
+	x665: [  0.0000,   0.0500] 
+	x666: [  0.0000,   0.0500] 
+	x667: [  0.0000,   0.0500] 
+	x668: [  0.0000,   0.0500] 
+	x669: [  0.0000,   0.0500] 
+	x670: [  0.0000,   0.0500] 
+	x671: [  0.0000,   0.0500] 
+	x672: [  0.0000,   0.0500] 
+	x673: [  0.0000,   0.0500] 
+	x674: [  0.0000,   0.0500] 
+	x675: [  0.0000,   0.0500] 
+	x676: [  0.0000,   0.0500] 
+	x677: [  0.0000,   0.0500] 
+	x678: [  0.0000,   0.0500] 
+	x679: [  0.0000,   0.0500] 
+	x680: [  0.0000,   0.0500] 
+	x681: [  0.0000,   0.0500] 
+	x682: [  0.0000,   0.0500] 
+	x683: [  0.0000,   0.0500] 
+	x684: [  0.0000,   0.0500] 
+	x685: [  0.0000,   0.0500] 
+	x686: [  0.0000,   0.0500] 
+	x687: [  0.0000,   0.0500] 
+	x688: [  0.0000,   0.0500] 
+	x689: [  0.0000,   0.0500] 
+	x690: [  0.0000,   0.0500] 
+	x691: [  0.0000,   0.0500] 
+	x692: [  0.0000,   0.0500] 
+	x693: [  0.0000,   0.0500] 
+	x694: [  0.0000,   0.0500] 
+	x695: [  0.0000,   0.0500] 
+	x696: [  0.0000,   0.0500] 
+	x697: [  0.0000,   0.0500] 
+	x698: [  0.0000,   0.0500] 
+	x699: [  0.0000,   0.0500] 
+	x700: [  0.0000,   0.0500] 
+	x701: [  0.0000,   0.0500] 
+	x702: [  0.0000,   0.0500] 
+	x703: [  0.0000,   0.0500] 
+	x704: [  0.0000,   0.0500] 
+	x705: [  0.0000,   0.0500] 
+	x706: [  0.0000,   0.0500] 
+	x707: [  0.0000,   0.0500] 
+	x708: [  0.0000,   0.0500] 
+	x709: [  0.0000,   0.0500] 
+	x710: [  0.0000,   0.0500] 
+	x711: [  0.0000,   0.0500] 
+	x712: [  0.0000,   0.0500] 
+	x713: [  0.0000,   0.0500] 
+	x714: [  0.0000,   0.0500] 
+	x715: [  0.0000,   0.0500] 
+	x716: [  0.0000,   0.0500] 
+	x717: [  0.0000,   0.0500] 
+	x718: [  0.0000,   0.0500] 
+	x719: [  0.0000,   0.0500] 
+	x720: [  0.0000,   0.0500] 
+	x721: [  0.0000,   0.0500] 
+	x722: [  0.0000,   0.0500] 
+	x723: [  0.0000,   0.0500] 
+	x724: [  0.0000,   0.0500] 
+	x725: [  0.0000,   0.0500] 
+	x726: [  0.0000,   0.0500] 
+	x727: [  0.0000,   0.0500] 
+	x728: [  0.0000,   0.0500] 
+	x729: [  0.0000,   0.0500] 
+	x730: [  0.0000,   0.0500] 
+	x731: [  0.0000,   0.0500] 
+	x732: [  0.0000,   0.0500] 
+	x733: [  0.0000,   0.0500] 
+	x734: [  0.0000,   0.0500] 
+	x735: [  0.0000,   0.0500] 
+	x736: [  0.0000,   0.0500] 
+	x737: [  0.0000,   0.0500] 
+	x738: [  0.0000,   0.0500] 
+	x739: [  0.0000,   0.0500] 
+	x740: [  0.0000,   0.0500] 
+	x741: [  0.0000,   0.0500] 
+	x742: [  0.0000,   0.0500] 
+	x743: [  0.0000,   0.0500] 
+	x744: [  0.0000,   0.0500] 
+	x745: [  0.0000,   0.0500] 
+	x746: [  0.0000,   0.0500] 
+	x747: [  0.0000,   0.0500] 
+	x748: [  0.0000,   0.0500] 
+	x749: [  0.0000,   0.0500] 
+	x750: [  0.0000,   0.0500] 
+	x751: [  0.0000,   0.0500] 
+	x752: [  0.0000,   0.0500] 
+	x753: [  0.0000,   0.0500] 
+	x754: [  0.0000,   0.0500] 
+	x755: [  0.0000,   0.0500] 
+	x756: [  0.0000,   0.0500] 
+	x757: [  0.0000,   0.0500] 
+	x758: [  0.0000,   0.0500] 
+	x759: [  0.0000,   0.0500] 
+	x760: [  0.0000,   0.0500] 
+	x761: [  0.0000,   0.0500] 
+	x762: [  0.0000,   0.0500] 
+	x763: [  0.0000,   0.0500] 
+	x764: [  0.0000,   0.0500] 
+	x765: [  0.0000,   0.0500] 
+	x766: [  0.0000,   0.0500] 
+	x767: [  0.0000,   0.0500] 
+	x768: [  0.0000,   0.0500] 
+	x769: [  0.0000,   0.0500] 
+	x770: [  0.0000,   0.0500] 
+	x771: [  0.0000,   0.0500] 
+	x772: [  0.0000,   0.0500] 
+	x773: [  0.0000,   0.0500] 
+	x774: [  0.0000,   0.0500] 
+	x775: [  0.0000,   0.0500] 
+	x776: [  0.0000,   0.0500] 
+	x777: [  0.0000,   0.0500] 
+	x778: [  0.0000,   0.0500] 
+	x779: [  0.0000,   0.0500] 
+	x780: [  0.0000,   0.0500] 
+	x781: [  0.0000,   0.0500] 
+	x782: [  0.0000,   0.0500] 
+	x783: [  0.0000,   0.0500] 
+
+Branching heuristics set to PseudoImpact
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: 	Tracking Pseudo Impact...
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Restoring engine state...
+SmtCore: 	Applying new split - DONE
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+Worker 0: Query 0 sat, 1 tasks remaining
+Worker 13: Query 13 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+Worker 26: Query 19 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 18: Query 15 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 16: Query 18 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 25: Query 16 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 17: Query 22 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 10: Query 9 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 29: Query 26 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 11: Query 12 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 14: Query 14 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 8: Query 8 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 19: Query 20 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 28: Query 17 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 22: Query 28 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+Worker 23: Query 23 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 9: Query 11 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 21: Query 24 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 20: Query 27 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 15: Query 21 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 27: Query 29 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+SmtCore: Performing a pop
+SmtCore: 	Restoring engine state...
+SmtCore: 	Restoring engine state - DONE
+SmtCore: 	Applying new split...
+SmtCore: 	Applying new split - DONE
+Worker 24: Query 25 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 3: Query 3 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 4: Query 4 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 1: Query 1 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 5: Query 5 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 12: Query 10 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 6: Query 6 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 2: Query 2 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+Worker 7: Query 7 QUIT_REQUESTED, 0 tasks remaining
+Quit requested by manager!
+
+sat
+
+Input assignment:
+	x0 = 0.050000
+	x1 = 0.050000
+	x2 = 0.050000
+	x3 = 0.050000
+	x4 = 0.000000
+	x5 = 0.000000
+	x6 = 0.050000
+	x7 = 0.050000
+	x8 = 0.000000
+	x9 = 0.050000
+	x10 = 0.050000
+	x11 = 0.000000
+	x12 = 0.000000
+	x13 = 0.050000
+	x14 = 0.050000
+	x15 = 0.000000
+	x16 = 0.000000
+	x17 = 0.050000
+	x18 = 0.050000
+	x19 = 0.050000
+	x20 = 0.050000
+	x21 = 0.000000
+	x22 = 0.050000
+	x23 = 0.050000
+	x24 = 0.000000
+	x25 = 0.050000
+	x26 = 0.050000
+	x27 = 0.000000
+	x28 = 0.050000
+	x29 = 0.000000
+	x30 = 0.000000
+	x31 = 0.050000
+	x32 = 0.000000
+	x33 = 0.050000
+	x34 = 0.050000
+	x35 = 0.050000
+	x36 = 0.050000
+	x37 = 0.050000
+	x38 = 0.000000
+	x39 = 0.050000
+	x40 = 0.000000
+	x41 = 0.000000
+	x42 = 0.000000
+	x43 = 0.000000
+	x44 = 0.000000
+	x45 = 0.050000
+	x46 = 0.050000
+	x47 = 0.000000
+	x48 = 0.000000
+	x49 = 0.000000
+	x50 = 0.050000
+	x51 = 0.050000
+	x52 = 0.000000
+	x53 = 0.050000
+	x54 = 0.000000
+	x55 = 0.000000
+	x56 = 0.000000
+	x57 = 0.050000
+	x58 = 0.050000
+	x59 = 0.050000
+	x60 = 0.050000
+	x61 = 0.000000
+	x62 = 0.000000
+	x63 = 0.000000
+	x64 = 0.000000
+	x65 = 0.000000
+	x66 = 0.000000
+	x67 = 0.000000
+	x68 = 0.000000
+	x69 = 0.000000
+	x70 = 0.000000
+	x71 = 0.000000
+	x72 = 0.000000
+	x73 = 0.050000
+	x74 = 0.000000
+	x75 = 0.000000
+	x76 = 0.000000
+	x77 = 0.000000
+	x78 = 0.050000
+	x79 = 0.000000
+	x80 = 0.000000
+	x81 = 0.050000
+	x82 = 0.000000
+	x83 = 0.000000
+	x84 = 0.000000
+	x85 = 0.000000
+	x86 = 0.050000
+	x87 = 0.050000
+	x88 = 0.050000
+	x89 = 0.000000
+	x90 = 0.050000
+	x91 = 0.050000
+	x92 = 0.000000
+	x93 = 0.000000
+	x94 = 0.000000
+	x95 = 0.050000
+	x96 = 0.050000
+	x97 = 0.050000
+	x98 = 0.050000
+	x99 = 0.050000
+	x100 = 0.050000
+	x101 = 0.050000
+	x102 = 0.050000
+	x103 = 0.050000
+	x104 = 0.050000
+	x105 = 0.050000
+	x106 = 0.000000
+	x107 = 0.050000
+	x108 = 0.000000
+	x109 = 0.050000
+	x110 = 0.000000
+	x111 = 0.050000
+	x112 = 0.000000
+	x113 = 0.050000
+	x114 = 0.050000
+	x115 = 0.050000
+	x116 = 0.000000
+	x117 = 0.000000
+	x118 = 0.000000
+	x119 = 0.000000
+	x120 = 0.000000
+	x121 = 0.050000
+	x122 = 0.000000
+	x123 = 0.000000
+	x124 = 0.000000
+	x125 = 0.050000
+	x126 = 0.000000
+	x127 = 0.016667
+	x128 = 0.412745
+	x129 = 1.000000
+	x130 = 0.963725
+	x131 = 0.024510
+	x132 = 0.050000
+	x133 = 0.000000
+	x134 = 0.050000
+	x135 = 0.050000
+	x136 = 0.000000
+	x137 = 0.000000
+	x138 = 0.000000
+	x139 = 0.050000
+	x140 = 0.000000
+	x141 = 0.050000
+	x142 = 0.050000
+	x143 = 0.050000
+	x144 = 0.050000
+	x145 = 0.000000
+	x146 = 0.000000
+	x147 = 0.000000
+	x148 = 0.050000
+	x149 = 0.050000
+	x150 = 0.050000
+	x151 = 0.050000
+	x152 = 0.000000
+	x153 = 0.051961
+	x154 = 0.520588
+	x155 = 0.844118
+	x156 = 0.938235
+	x157 = 1.000000
+	x158 = 1.000000
+	x159 = 0.975490
+	x160 = 0.681373
+	x161 = 0.246078
+	x162 = 0.050000
+	x163 = 0.050000
+	x164 = 0.000000
+	x165 = 0.000000
+	x166 = 0.050000
+	x167 = 0.050000
+	x168 = 0.050000
+	x169 = 0.050000
+	x170 = 0.050000
+	x171 = 0.050000
+	x172 = 0.050000
+	x173 = 0.000000
+	x174 = 0.000000
+	x175 = 0.000000
+	x176 = 0.000000
+	x177 = 0.000000
+	x178 = 0.000000
+	x179 = 0.051961
+	x180 = 0.224510
+	x181 = 0.820588
+	x182 = 0.938235
+	x183 = 0.938235
+	x184 = 0.938235
+	x185 = 0.938235
+	x186 = 0.942157
+	x187 = 0.938235
+	x188 = 1.000000
+	x189 = 0.775490
+	x190 = 0.077451
+	x191 = 0.000000
+	x192 = 0.000000
+	x193 = 0.050000
+	x194 = 0.000000
+	x195 = 0.000000
+	x196 = 0.050000
+	x197 = 0.050000
+	x198 = 0.050000
+	x199 = 0.050000
+	x200 = 0.000000
+	x201 = 0.000000
+	x202 = 0.000000
+	x203 = 0.000000
+	x204 = 0.000000
+	x205 = 0.267647
+	x206 = 0.761765
+	x207 = 0.828431
+	x208 = 0.938235
+	x209 = 0.942157
+	x210 = 1.000000
+	x211 = 0.938235
+	x212 = 0.938235
+	x213 = 0.873529
+	x214 = 0.612745
+	x215 = 0.938235
+	x216 = 0.938235
+	x217 = 1.000000
+	x218 = 0.304902
+	x219 = 0.050000
+	x220 = 0.050000
+	x221 = 0.050000
+	x222 = 0.050000
+	x223 = 0.000000
+	x224 = 0.050000
+	x225 = 0.050000
+	x226 = 0.000000
+	x227 = 0.050000
+	x228 = 0.000000
+	x229 = 0.000000
+	x230 = 0.000000
+	x231 = 0.000000
+	x232 = 0.651961
+	x233 = 0.906863
+	x234 = 0.938235
+	x235 = 0.938235
+	x236 = 0.938235
+	x237 = 0.942157
+	x238 = 0.955882
+	x239 = 0.365686
+	x240 = 0.036275
+	x241 = 0.000000
+	x242 = 0.248039
+	x243 = 0.938235
+	x244 = 1.000000
+	x245 = 1.000000
+	x246 = 0.075490
+	x247 = 0.050000
+	x248 = 0.050000
+	x249 = 0.050000
+	x250 = 0.000000
+	x251 = 0.000000
+	x252 = 0.050000
+	x253 = 0.050000
+	x254 = 0.050000
+	x255 = 0.050000
+	x256 = 0.000000
+	x257 = 0.000000
+	x258 = 0.000000
+	x259 = 0.050000
+	x260 = 0.950000
+	x261 = 0.942157
+	x262 = 0.942157
+	x263 = 1.000000
+	x264 = 0.544118
+	x265 = 0.257843
+	x266 = 0.050000
+	x267 = 0.050000
+	x268 = 0.124510
+	x269 = 0.759804
+	x270 = 1.000000
+	x271 = 1.000000
+	x272 = 0.942157
+	x273 = 0.538235
+	x274 = 0.000000
+	x275 = 0.050000
+	x276 = 0.050000
+	x277 = 0.050000
+	x278 = 0.000000
+	x279 = 0.050000
+	x280 = 0.050000
+	x281 = 0.050000
+	x282 = 0.050000
+	x283 = 0.050000
+	x284 = 0.000000
+	x285 = 0.050000
+	x286 = 0.050000
+	x287 = 0.050000
+	x288 = 0.861765
+	x289 = 0.857843
+	x290 = 0.532353
+	x291 = 0.277451
+	x292 = 0.050000
+	x293 = 0.000000
+	x294 = 0.234314
+	x295 = 0.559804
+	x296 = 0.975490
+	x297 = 1.000000
+	x298 = 1.000000
+	x299 = 1.000000
+	x300 = 0.683333
+	x301 = 0.016667
+	x302 = 0.042125
+	x303 = 0.050000
+	x304 = 0.050000
+	x305 = 0.050000
+	x306 = 0.000000
+	x307 = 0.050000
+	x308 = 0.000000
+	x309 = 0.050000
+	x310 = 0.050000
+	x311 = 0.050000
+	x312 = 0.000000
+	x313 = 0.050000
+	x314 = 0.050000
+	x315 = 0.050000
+	x316 = 0.050000
+	x317 = 0.050000
+	x318 = 0.124510
+	x319 = 0.324510
+	x320 = 0.528431
+	x321 = 0.799020
+	x322 = 0.938235
+	x323 = 1.000000
+	x324 = 0.938235
+	x325 = 1.000000
+	x326 = 1.000000
+	x327 = 0.575490
+	x328 = 0.024510
+	x329 = 0.050000
+	x330 = 0.050000
+	x331 = 0.050000
+	x332 = 0.050000
+	x333 = 0.012534
+	x334 = 0.000000
+	x335 = 0.050000
+	x336 = 0.050000
+	x337 = 0.050000
+	x338 = 0.050000
+	x339 = 0.050000
+	x340 = 0.050000
+	x341 = 0.050000
+	x342 = 0.050000
+	x343 = 0.050000
+	x344 = 0.050000
+	x345 = 0.367647
+	x346 = 0.912745
+	x347 = 1.000000
+	x348 = 0.938235
+	x349 = 0.942157
+	x350 = 0.938235
+	x351 = 0.938235
+	x352 = 0.938235
+	x353 = 1.000000
+	x354 = 1.000000
+	x355 = 0.842157
+	x356 = 0.148039
+	x357 = 0.050000
+	x358 = 0.050000
+	x359 = 0.050000
+	x360 = 0.050000
+	x361 = 0.000000
+	x362 = 0.000000
+	x363 = 0.000000
+	x364 = 0.000000
+	x365 = 0.050000
+	x366 = 0.000000
+	x367 = 0.050000
+	x368 = 0.050000
+	x369 = 0.050000
+	x370 = 0.050000
+	x371 = 0.050000
+	x372 = 0.136275
+	x373 = 1.000000
+	x374 = 1.000000
+	x375 = 0.938235
+	x376 = 0.938235
+	x377 = 0.942157
+	x378 = 0.938235
+	x379 = 0.938235
+	x380 = 0.938235
+	x381 = 1.000000
+	x382 = 1.000000
+	x383 = 1.000000
+	x384 = 0.853922
+	x385 = 0.132353
+	x386 = 0.050000
+	x387 = 0.050000
+	x388 = 0.050000
+	x389 = 0.000000
+	x390 = 0.000000
+	x391 = 0.050000
+	x392 = 0.050000
+	x393 = 0.050000
+	x394 = 0.000000
+	x395 = 0.000000
+	x396 = 0.050000
+	x397 = 0.050000
+	x398 = 0.000000
+	x399 = 0.050000
+	x400 = 0.136275
+	x401 = 0.851961
+	x402 = 0.895098
+	x403 = 0.851961
+	x404 = 0.444118
+	x405 = 0.404902
+	x406 = 0.404902
+	x407 = 0.404902
+	x408 = 0.404902
+	x409 = 0.404902
+	x410 = 1.000000
+	x411 = 1.000000
+	x412 = 1.000000
+	x413 = 0.477451
+	x414 = 0.050000
+	x415 = 0.050000
+	x416 = 0.050000
+	x417 = 0.000000
+	x418 = 0.000000
+	x419 = 0.050000
+	x420 = 0.000000
+	x421 = 0.000000
+	x422 = 0.000000
+	x423 = 0.000000
+	x424 = 0.050000
+	x425 = 0.050000
+	x426 = 0.050000
+	x427 = 0.050000
+	x428 = 0.050000
+	x429 = 0.050000
+	x430 = 0.114706
+	x431 = 0.000000
+	x432 = 0.000000
+	x433 = 0.000000
+	x434 = 0.050000
+	x435 = 0.000000
+	x436 = 0.000000
+	x437 = 0.050000
+	x438 = 0.591176
+	x439 = 1.000000
+	x440 = 1.000000
+	x441 = 0.677451
+	x442 = 0.050000
+	x443 = 0.050000
+	x444 = 0.050000
+	x445 = 0.000000
+	x446 = 0.000000
+	x447 = 0.050000
+	x448 = 0.050000
+	x449 = 0.000000
+	x450 = 0.000000
+	x451 = 0.000000
+	x452 = 0.050000
+	x453 = 0.050000
+	x454 = 0.050000
+	x455 = 0.050000
+	x456 = 0.050000
+	x457 = 0.050000
+	x458 = 0.000000
+	x459 = 0.000000
+	x460 = 0.000000
+	x461 = 0.000000
+	x462 = 0.000000
+	x463 = 0.000000
+	x464 = 0.000000
+	x465 = 0.283333
+	x466 = 0.820588
+	x467 = 1.000000
+	x468 = 1.000000
+	x469 = 0.251961
+	x470 = 0.050000
+	x471 = 0.000000
+	x472 = 0.050000
+	x473 = 0.050000
+	x474 = 0.000000
+	x475 = 0.050000
+	x476 = 0.050000
+	x477 = 0.050000
+	x478 = 0.000000
+	x479 = 0.000000
+	x480 = 0.050000
+	x481 = 0.050000
+	x482 = 0.050000
+	x483 = 0.050000
+	x484 = 0.050000
+	x485 = 0.050000
+	x486 = 0.045347
+	x487 = 0.050000
+	x488 = 0.050000
+	x489 = 0.050000
+	x490 = 0.000000
+	x491 = 0.000000
+	x492 = 0.000000
+	x493 = 0.873529
+	x494 = 0.942157
+	x495 = 1.000000
+	x496 = 0.840196
+	x497 = 0.063725
+	x498 = 0.050000
+	x499 = 0.050000
+	x500 = 0.050000
+	x501 = 0.050000
+	x502 = 0.000000
+	x503 = 0.050000
+	x504 = 0.050000
+	x505 = 0.050000
+	x506 = 0.050000
+	x507 = 0.000000
+	x508 = 0.012342
+	x509 = 0.050000
+	x510 = 0.050000
+	x511 = 0.050000
+	x512 = 0.050000
+	x513 = 0.050000
+	x514 = 0.050000
+	x515 = 0.050000
+	x516 = 0.050000
+	x517 = 0.050000
+	x518 = 0.050000
+	x519 = 0.050000
+	x520 = 0.791176
+	x521 = 1.000000
+	x522 = 0.942157
+	x523 = 0.938235
+	x524 = 0.259804
+	x525 = 0.000000
+	x526 = 0.000000
+	x527 = 0.050000
+	x528 = 0.050000
+	x529 = 0.000000
+	x530 = 0.000000
+	x531 = 0.000000
+	x532 = 0.000000
+	x533 = 0.050000
+	x534 = 0.050000
+	x535 = 0.000000
+	x536 = 0.050000
+	x537 = 0.050000
+	x538 = 0.050000
+	x539 = 0.050000
+	x540 = 0.050000
+	x541 = 0.050000
+	x542 = 0.000000
+	x543 = 0.050000
+	x544 = 0.050000
+	x545 = 0.050000
+	x546 = 0.069608
+	x547 = 0.591176
+	x548 = 1.000000
+	x549 = 1.000000
+	x550 = 1.000000
+	x551 = 0.479412
+	x552 = 0.000000
+	x553 = 0.000000
+	x554 = 0.050000
+	x555 = 0.050000
+	x556 = 0.050000
+	x557 = 0.002134
+	x558 = 0.050000
+	x559 = 0.050000
+	x560 = 0.050000
+	x561 = 0.050000
+	x562 = 0.050000
+	x563 = 0.108824
+	x564 = 0.581373
+	x565 = 0.555882
+	x566 = 0.000000
+	x567 = 0.000000
+	x568 = 0.050000
+	x569 = 0.050000
+	x570 = 0.050000
+	x571 = 0.050000
+	x572 = 0.136275
+	x573 = 0.481373
+	x574 = 0.748039
+	x575 = 1.000000
+	x576 = 1.000000
+	x577 = 1.000000
+	x578 = 0.687255
+	x579 = 0.000000
+	x580 = 0.000000
+	x581 = 0.000000
+	x582 = 0.050000
+	x583 = 0.050000
+	x584 = 0.000000
+	x585 = 0.000000
+	x586 = 0.050000
+	x587 = 0.000000
+	x588 = 0.000000
+	x589 = 0.050000
+	x590 = 0.050000
+	x591 = 0.491176
+	x592 = 0.938235
+	x593 = 0.938235
+	x594 = 0.718627
+	x595 = 0.671569
+	x596 = 0.432353
+	x597 = 0.406863
+	x598 = 0.671569
+	x599 = 0.771569
+	x600 = 0.893137
+	x601 = 0.942157
+	x602 = 0.938235
+	x603 = 1.000000
+	x604 = 0.940196
+	x605 = 0.459804
+	x606 = 0.000000
+	x607 = 0.000000
+	x608 = 0.000000
+	x609 = 0.000000
+	x610 = 0.050000
+	x611 = 0.050000
+	x612 = 0.050000
+	x613 = 0.050000
+	x614 = 0.050000
+	x615 = 0.000000
+	x616 = 0.000000
+	x617 = 0.000000
+	x618 = 0.050000
+	x619 = 0.942157
+	x620 = 0.938235
+	x621 = 0.938235
+	x622 = 0.938235
+	x623 = 0.938235
+	x624 = 0.942157
+	x625 = 0.938235
+	x626 = 0.938235
+	x627 = 1.000000
+	x628 = 1.000000
+	x629 = 1.000000
+	x630 = 1.000000
+	x631 = 0.675490
+	x632 = 0.246078
+	x633 = 0.050000
+	x634 = 0.000000
+	x635 = 0.000000
+	x636 = 0.000000
+	x637 = 0.000000
+	x638 = 0.050000
+	x639 = 0.050000
+	x640 = 0.050000
+	x641 = 0.050000
+	x642 = 0.050000
+	x643 = 0.000000
+	x644 = 0.050000
+	x645 = 0.050000
+	x646 = 0.050000
+	x647 = 0.326471
+	x648 = 0.938235
+	x649 = 0.938235
+	x650 = 0.938235
+	x651 = 0.938235
+	x652 = 0.942157
+	x653 = 0.938235
+	x654 = 0.938235
+	x655 = 0.938235
+	x656 = 0.526471
+	x657 = 0.587255
+	x658 = 0.300980
+	x659 = 0.000000
+	x660 = 0.050000
+	x661 = 0.050000
+	x662 = 0.000000
+	x663 = 0.000000
+	x664 = 0.000000
+	x665 = 0.000000
+	x666 = 0.050000
+	x667 = 0.050000
+	x668 = 0.050000
+	x669 = 0.000000
+	x670 = 0.000000
+	x671 = 0.000000
+	x672 = 0.050000
+	x673 = 0.050000
+	x674 = 0.050000
+	x675 = 0.000000
+	x676 = 0.000000
+	x677 = 0.000000
+	x678 = 0.000000
+	x679 = 0.050000
+	x680 = 0.050000
+	x681 = 0.000000
+	x682 = 0.000000
+	x683 = 0.000000
+	x684 = 0.050000
+	x685 = 0.050000
+	x686 = 0.050000
+	x687 = 0.050000
+	x688 = 0.050000
+	x689 = 0.000000
+	x690 = 0.000000
+	x691 = 0.000000
+	x692 = 0.000000
+	x693 = 0.000000
+	x694 = 0.000000
+	x695 = 0.050000
+	x696 = 0.000000
+	x697 = 0.050000
+	x698 = 0.050000
+	x699 = 0.000000
+	x700 = 0.000000
+	x701 = 0.050000
+	x702 = 0.050000
+	x703 = 0.050000
+	x704 = 0.050000
+	x705 = 0.000000
+	x706 = 0.000000
+	x707 = 0.000000
+	x708 = 0.000000
+	x709 = 0.050000
+	x710 = 0.050000
+	x711 = 0.000000
+	x712 = 0.050000
+	x713 = 0.050000
+	x714 = 0.000000
+	x715 = 0.050000
+	x716 = 0.050000
+	x717 = 0.000000
+	x718 = 0.000899
+	x719 = 0.050000
+	x720 = 0.000000
+	x721 = 0.000000
+	x722 = 0.000000
+	x723 = 0.000000
+	x724 = 0.050000
+	x725 = 0.000000
+	x726 = 0.050000
+	x727 = 0.000000
+	x728 = 0.050000
+	x729 = 0.000000
+	x730 = 0.050000
+	x731 = 0.000000
+	x732 = 0.050000
+	x733 = 0.000000
+	x734 = 0.050000
+	x735 = 0.050000
+	x736 = 0.050000
+	x737 = 0.000000
+	x738 = 0.013072
+	x739 = 0.050000
+	x740 = 0.000000
+	x741 = 0.000000
+	x742 = 0.000000
+	x743 = 0.000000
+	x744 = 0.000000
+	x745 = 0.050000
+	x746 = 0.050000
+	x747 = 0.050000
+	x748 = 0.050000
+	x749 = 0.000000
+	x750 = 0.050000
+	x751 = 0.000000
+	x752 = 0.050000
+	x753 = 0.050000
+	x754 = 0.050000
+	x755 = 0.000000
+	x756 = 0.050000
+	x757 = 0.050000
+	x758 = 0.000000
+	x759 = 0.000000
+	x760 = 0.050000
+	x761 = 0.050000
+	x762 = 0.050000
+	x763 = 0.050000
+	x764 = 0.000000
+	x765 = 0.050000
+	x766 = 0.000000
+	x767 = 0.050000
+	x768 = 0.050000
+	x769 = 0.050000
+	x770 = 0.000000
+	x771 = 0.000000
+	x772 = 0.000000
+	x773 = 0.000000
+	x774 = 0.000000
+	x775 = 0.000000
+	x776 = 0.050000
+	x777 = 0.050000
+	x778 = 0.050000
+	x779 = 0.000000
+	x780 = 0.000000
+	x781 = 0.000000
+	x782 = 0.000000
+	x783 = 0.050000
+
+Output:
+	nlr y0 = 0.043205
+	nlr y1 = -0.026010
+	nlr y2 = 0.025507
+	nlr y3 = -0.006304
+	nlr y4 = -0.003802
+	nlr y5 = -0.007547
+	nlr y6 = -0.006704
+	nlr y7 = -0.001447
+	nlr y8 = 0.941557
+	nlr y9 = -0.005466
+

@@ -1,0 +1,50 @@
+CEX=1
+
+real    20m14.863s
+user    565m35.754s
+sys     4m27.004s
+CEX=2
+
+real    1m16.450s
+user    1m41.625s
+sys     2m10.575s
+CEX=3
+
+real    20m9.642s
+user    558m18.250s
+sys     7m0.748s
+CEX=4
+
+real    20m9.573s
+user    561m18.471s
+sys     6m39.611s
+CEX=5
+
+real    20m35.410s
+user    567m47.635s
+sys     3m14.881s
+CEX=6
+
+real    0m0.990s
+user    0m2.132s
+sys     0m4.712s
+CEX=7
+
+real    2m10.211s
+user    21m56.714s
+sys     2m46.830s
+CEX=8
+
+real    0m0.986s
+user    0m2.025s
+sys     0m4.770s
+CEX=9
+
+real    3m41.953s
+user    71m56.534s
+sys     2m43.218s
+CEX=10
+
+real    5m15.957s
+user    116m31.211s
+sys     2m46.671s

@@ -1,0 +1,13 @@
+/home/ubuntu/workspace/Marabou/maraboupy/Marabou.py:27: UserWarning: Tensorflow parser is unavailable because tensorflow package is not installed
+  warnings.warn("Tensorflow parser is unavailable because tensorflow package is not installed")
+/home/ubuntu/anaconda3/envs/abc310/lib/python3.10/site-packages/onnx2pytorch/convert/layer.py:30: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at  /opt/conda/conda-bld/pytorch_1659484746364/work/torch/csrc/utils/tensor_numpy.cpp:172.)
+  layer.weight.data = torch.from_numpy(numpy_helper.to_array(weight))
+/home/ubuntu/workspace/VerifyNNE/utils.py:190: ResourceWarning: unclosed file <_io.TextIOWrapper name='datasets/mnist_fc2022_specs/prop_12_0.03.vnnlib' mode='r' encoding='UTF-8'>
+  script = parser.get_script(open(path, "r"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/ubuntu/anaconda3/envs/abc310/lib/python3.10/site-packages/onnx2pytorch/convert/model.py:163: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if not self.experimental and inputs[0].shape[self.batch_dim] > 1:
+WARNING: The shape inference of grad::Relu type is missing, so it may result in wrong shape inference for the exported graph. Please consider adding it in symbolic function.
+WARNING: The shape inference of grad::Relu type is missing, so it may result in wrong shape inference for the exported graph. Please consider adding it in symbolic function.
+WARNING: The shape inference of grad::Relu type is missing, so it may result in wrong shape inference for the exported graph. Please consider adding it in symbolic function.
+WARNING: The shape inference of grad::Relu type is missing, so it may result in wrong shape inference for the exported graph. Please consider adding it in symbolic function.

@@ -1,0 +1,5 @@
+InputQuery: finalQuery_smallConv
+
+Engine::processInputQuery: Input query (before preprocessing): 1819 equations, 3636 variables
+
+unsat
