@@ -1,0 +1,10 @@
+./run_mnist_fc_saliency.sh 1
+./run_mnist_fc_saliency.sh 2
+./run_mnist_fc_saliency.sh 3
+./run_mnist_fc_saliency.sh 4
+./run_mnist_fc_saliency.sh 5
+./run_mnist_fc_saliency.sh 6
+./run_mnist_fc_saliency.sh 7
+./run_mnist_fc_saliency.sh 8
+./run_mnist_fc_saliency.sh 9
+./run_mnist_fc_saliency.sh 10
