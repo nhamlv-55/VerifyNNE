@@ -183,8 +183,14 @@ def parse_raw_idx(raw_idx: int) -> Tuple[int, int, int]:
 def load_vnnlib(path: str) -> Tuple[torch.Tensor, float, int, List[int]]:
     # a hack to detect `nice` eps
     basename = os.path.basename(path)
-    v = basename.split(".")[1]
-    eps = float("0.{}".format(v))
+    if "mnist" in path:
+        v = basename.split(".")[1]
+        eps = float("0.{}".format(v))
+    elif "cifar" in path:
+        #basename is smt like cifar10_2_255_simplified_cifar10_spec_idx_0_eps_0.00784_n1.vnnlib
+        v = basename.split(".")[1].split("_")[0]
+        eps = float(f"0.{v}")
+
 
     parser = SmtLibParser()
     script = parser.get_script(open(path, "r"))
