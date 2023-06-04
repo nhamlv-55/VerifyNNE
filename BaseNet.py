@@ -78,6 +78,7 @@ class BaseNet():
         torch.onnx.export(self.pytorch_net, dummy_input, tempf.name, verbose=False)
 
         self.marabou_net = Marabou.read_onnx_plus(tempf.name)
+        self.fw_ipq = MarabouCore.InputQuery(self.marabou_net.getForwardQuery())
         return self.marabou_net
 
     def fusion(self, layer_map: Dict[str, List[int]], label:int):
@@ -93,7 +94,9 @@ class BaseNet():
             if auto_lirpa_node in self.forward_bounds:
                 print(f"fusing bounds for forward node {auto_lirpa_node}")
                 print(self.forward_bounds[auto_lirpa_node])
-                assert len(layer_map[auto_lirpa_node]) == self.forward_bounds[auto_lirpa_node][0].shape[-1]
+                _shape1 = len(layer_map[auto_lirpa_node])
+                _shape2 = self.forward_bounds[auto_lirpa_node][0].shape
+                assert _shape1 == _shape2[-1], print(_shape1, "!~", _shape2)
                 for idx, var in enumerate(layer_map[auto_lirpa_node]):
                     self.fused_bounds[var] = (self.forward_bounds[auto_lirpa_node][0][idx].item(),
                                               self.forward_bounds[auto_lirpa_node][1][idx].item())
@@ -104,7 +107,6 @@ class BaseNet():
                 for idx, var in enumerate(layer_map[auto_lirpa_node]):
                     self.fused_bounds[var] = (self.grad_bounds[auto_lirpa_node][0][idx].item(),
                                               self.grad_bounds[auto_lirpa_node][1][idx].item())
-        print("---------------------------")         
         return self.fused_bounds
 
     def load_jacobian_bounds(self, pre_computed_bounds: Dict[str, Dict[str, Tuple[torch.Tensor, torch.Tensor]]]):
@@ -112,8 +114,18 @@ class BaseNet():
         self.forward_bounds = pre_computed_bounds["forward_bounds"]
         self.grad_bounds = pre_computed_bounds["grad_bounds"]
 
-    def compute_jacobian_bounds(self, input: torch.autograd.Variable, eps: float, label: int):
+    def compute_jacobian_bounds(self, input: torch.autograd.Variable, 
+                                eps: float, 
+                                label: int, 
+                                option: Dict[str, Any]|None):
+        print(f"COMPUTING JACOBIAN WITH EPS={eps}")
+
         self.lirpa_model = BoundedModule(self.pytorch_net, input)
+        self.lirpa_model.set_bound_opts(option) 
+        
+        self.lirpa_forward_model = BoundedModule(self.pytorch_net, input)
+        self.lirpa_forward_model.set_bound_opts(option)
+        
         print(self.lirpa_model.node_name_map)
         print(self.marabou_net.shapeMap)
         self.lirpa_model.augment_gradient_graph(input)
@@ -124,24 +136,16 @@ class BaseNet():
             if isinstance(lirpa_layers[i], BoundParams): continue
             if "grad" in lirpa_layers[i].name and "tmp" not in lirpa_layers[i].name:
                 print(f"Bounding the backward node {lirpa_layers[i]}")
-                lb, ub = self.lirpa_model.compute_jacobian_bounds(x, final_node_name=lirpa_layers[i].name)
+                lb, ub = self.lirpa_model.compute_jacobian_bounds(x, optimize=True, final_node_name=lirpa_layers[i].name)
                 self.grad_bounds[lirpa_layers[i].name] = (lb[label], ub[label])
             elif "grad" not in lirpa_layers[i].name:
                 print(f"Bounding the forward node {lirpa_layers[i]}")
-                lb, ub = self.lirpa_model.compute_jacobian_bounds(x, final_node_name=lirpa_layers[i].name)
-                self.forward_bounds[lirpa_layers[i].name] = (lb[label], ub[label])
+                lb, ub = self.lirpa_forward_model.compute_bounds(x=(x,), final_node_name=lirpa_layers[i].name)
+                self.forward_bounds[lirpa_layers[i].name] = (lb.squeeze(), ub.squeeze())
 
 
-    def build_marabou_ipq(self)->MarabouCore.InputQuery:
-        """
-            build the Marabou Query from the internal marabou_net
-            Note: addBackwardQuery assumes the correct accumulateGrad 
-        """
-        self.fw_ipq = MarabouCore.InputQuery(self.marabou_net.getForwardQuery())
-        self.marabou_net.buildBackwardConstraints()
-        ipq:MarabouCore.InputQuery = self.marabou_net.addBackwardQuery()
-        return ipq
-
+    def add_backward_query(self, to_be_abstracted: List[int], abs_domain: str, top_k:int)->None:
+        self.marabou_net.addBackwardQuery(to_be_abstracted, self.fused_bounds, abs_domain=abs_domain, top_k = top_k)
 
     def check_network_consistancy(self, verbosity:int = 0)->bool:
         """
@@ -149,8 +153,6 @@ class BaseNet():
             Strat: generate a random input, and run it through both network. The outputs should be similar, up 
             to a threshold
         """
-        if self.marabou_forward_net is None:
-            return False
         options = Marabou.createOptions(verbosity = verbosity)
         input_shape: Tuple[int] = self.marabou_forward_net.inputVars[0].shape
         dummy_inputs: List[torch.Tensor] = [torch.rand(input_shape)]
