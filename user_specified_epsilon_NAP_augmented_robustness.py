@@ -13,12 +13,17 @@ import torch
 import tempfile
 import subprocess
 import datetime
-PATH = 'vnncomp2021/benchmarks/mnistfc/mnist-net_256x4.onnx'
-MAX_TIME = 1200  # in seconds
+# PATH = 'vnncomp2021/benchmarks/mnistfc/mnist-net_256x4.onnx'
+PATH = 'xornet.onnx'
+MAX_TIME = 1800  # in seconds
 np.random.seed(42)
 MARABOU = '/home/nle/opt/Marabou/build/bin/Marabou'
 
 BENCHMARK_PATH = 'datasets/MNIST/prop_14_0.05.vnnlib'
+# RELU_OFFSET = 28*28+10
+# LAYER_OFFSET = 256
+RELU_OFFSET = 0
+LAYER_OFFSET = 3
 input, eps, true_label, adv_label = load_vnnlib(BENCHMARK_PATH)
 print("true label", true_label)
 print("eps", eps)
@@ -32,12 +37,15 @@ with open(PATTERN_PATH, "r") as f:
     STABLE_PATTERNS = json.load(f)
 
 NETWORK = Marabou.read_onnx(PATH)
-PYTORCH_NETWORK = ConvertModel(onnx.load(PATH))
-print("Checking loaded network:")
-print("true label:", true_label)
-true_output = PYTORCH_NETWORK(input.resize(1, 28, 28))
-print("true_output", true_output)
+# PYTORCH_NETWORK = ConvertModel(onnx.load(PATH))
+# print("Checking loaded network:")
+# print("true label:", true_label)
+# true_output = PYTORCH_NETWORK(input.resize(1, 28, 28))
+# print("true_output", true_output)
 START_PATTERN = Pattern()
+START_PATTERN.activated=[5]
+START_PATTERN.deactivated=[4]
+START_PATTERN.finalize()
 # START_PATTERN.from_check_list(STABLE_PATTERNS[str(true_label)]["stable_idx"],
 #                               STABLE_PATTERNS[str(true_label)]["val"])
 
@@ -64,14 +72,14 @@ def add_relu_constraints(network: Marabou.MarabouNetwork,
     print("adding relu constraints... There are {} fixed relus".format(pattern.n_fixed_relus))
     print("adding positive relu")
     for i in range(len(pattern.activated)):
-        marabou_idx = pattern.activated[i]+28*28+10
+        marabou_idx = pattern.activated[i]+RELU_OFFSET
         print(marabou_idx)
         #input of ReLU must be >=0
         network.setLowerBound(marabou_idx, 0.000001)
 
     print("adding negative relu")
     for i in range(len(pattern.deactivated)):
-        marabou_idx = pattern.deactivated[i]+28*28+10
+        marabou_idx = pattern.deactivated[i]+RELU_OFFSET
         print(marabou_idx)
         constraint = MarabouUtils.Equation(MarabouCore.Equation.LE)
         constraint.addAddend(1, marabou_idx)
@@ -80,8 +88,8 @@ def add_relu_constraints(network: Marabou.MarabouNetwork,
         network.addEquation(constraint)
 
         #output of ReLU must be 0
-        network.setLowerBound(marabou_idx+256, -0.000001)
-        network.setUpperBound(marabou_idx+256, 0.000001)
+        network.setLowerBound(marabou_idx+LAYER_OFFSET, -0.000001)
+        network.setUpperBound(marabou_idx+LAYER_OFFSET, 0.000001)
 
 
 
@@ -97,7 +105,7 @@ def check_pattern(network: Marabou.MarabouNetwork, prop_name: str,
 
     if add_output_constraints:
         print("adding output constraints...")
-        for l in range(10):
+        for l in range(2):
             if l==other_label: continue
             constraint = MarabouUtils.Equation(MarabouCore.Equation.GE)
             constraint.addAddend(1, other_label+offset)
@@ -263,10 +271,11 @@ def find_NAP(input: List[float], start_pattern: Pattern, target_epsilon: float) 
 
 
 def main():
-    EPS = 0.05
+    EPS = 0.2
     #check that the target input is not robust at the desired epsilon
     print("checking to see if the input is not robust at the desired epsilon")
-    cs = findCEX(TARGET_INPUT, START_PATTERN, EPS, use_attack=False)
+    # cs = findCEX(TARGET_INPUT, START_PATTERN, EPS, use_attack=False)
+    cs = findCEX(np.array([0.1, 0.8]), START_PATTERN, EPS, use_attack=False)
     if len(cs)==0:
         print("input is already robust at epsilon")
         return
