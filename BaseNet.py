@@ -1,3 +1,4 @@
+from __future__ import annotations
 from torch import Tensor
 import torch
 import torch.nn as nn
@@ -5,7 +6,6 @@ import torch.nn.functional as F
 import logging
 import copy
 import numpy as np
-import onnx, onnx2pytorch
 from typing import Any, Callable, List, Dict, Tuple
 from maraboupy import Marabou, MarabouCore  # type: ignore
 from maraboupy.MarabouNetwork import MarabouNetwork
@@ -117,7 +117,7 @@ class BaseNet():
     def compute_jacobian_bounds(self, input: torch.autograd.Variable, 
                                 eps: float, 
                                 label: int, 
-                                option: Dict[str, Any]|None):
+                                option: Dict[str, Any]):
         print(f"COMPUTING JACOBIAN WITH EPS={eps}")
 
         self.lirpa_model = BoundedModule(self.pytorch_net, input)
@@ -136,7 +136,8 @@ class BaseNet():
             if isinstance(lirpa_layers[i], BoundParams): continue
             if "grad" in lirpa_layers[i].name and "tmp" not in lirpa_layers[i].name:
                 print(f"Bounding the backward node {lirpa_layers[i]}")
-                lb, ub = self.lirpa_model.compute_jacobian_bounds(x, optimize=True, final_node_name=lirpa_layers[i].name)
+                lb, ub = self.lirpa_model.compute_jacobian_bounds(x, optimize=False, 
+                                                                  final_node_name=lirpa_layers[i].name)
                 self.grad_bounds[lirpa_layers[i].name] = (lb[label], ub[label])
             elif "grad" not in lirpa_layers[i].name:
                 print(f"Bounding the forward node {lirpa_layers[i]}")
@@ -145,7 +146,9 @@ class BaseNet():
 
 
     def add_backward_query(self, to_be_abstracted: List[int], abs_domain: str, top_k:int)->None:
-        self.marabou_net.addBackwardQuery(to_be_abstracted, self.fused_bounds, abs_domain=abs_domain, top_k = top_k)
+        self.marabou_net.addBackwardQuery(to_be_abstracted, self.fused_bounds, 
+                                        #   abs_domain=abs_domain, top_k = top_k
+                                          )
 
     def check_network_consistancy(self, verbosity:int = 0)->bool:
         """
