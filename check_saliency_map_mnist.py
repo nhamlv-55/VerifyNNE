@@ -1,4 +1,4 @@
-from BanditNet import Net
+from __future__ import annotations
 from typing import Any, Dict, Optional, Tuple, List
 from AcasXuNet import AcasXu
 from BaseNet import BaseNet
@@ -16,7 +16,7 @@ import pickle as pkl
 import subprocess
 import sys
 
-NUM_THREADS = 30
+NUM_THREADS = 10
 TIMEOUT = 600
 GRAD_EPS = 1.25
 LIRPA_OPTION = {'optimize_bound_args': {'enable_beta_crown': True, 
@@ -323,7 +323,7 @@ def prepare_benchmarks(benchmark_set: str, cex:int)-> Tuple[BaseNet, torch.Tenso
 
         return toy, input, eps, true_label, adv_labels, precomputed_bounds, layer_map
 
-    elif benchmark=="cifar2020":
+    elif benchmark_set=="cifar2020":
         cifar10: BaseNet = BaseNet(ConvertModel(onnx.load('datasets/vnncomp2022_benchmarks/benchmarks/cifar2020/onnx/cifar10_2_255_simplified.onnx')))
 
         cifar10.pytorch_net.to(dtype=torch.double)
